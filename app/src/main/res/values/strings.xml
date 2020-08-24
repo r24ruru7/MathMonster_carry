@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">MathMonster_carry</string>
+    <string name="title1">タイル式</string>
+    <string name="title2">けいさんモンスター</string>
+    <string name="title3">(くりあがり・くりさがり)</string>
+    <string name="PlusBtn">たしざん</string>
+    <string name="MinusBtn">ひきざん</string>
+    <string name="level1">レベル1</string>
+    <string name="level2">レベル2</string>
+    <string name="level3">レベル3</string>
+    <string name="level4">レベル4</string>
+    <string name="level5">レベル5</string>
+    <string name="levelmix">ミックス</string>
+    <string name="touchtext">がめんにふれてね</string>
 </resources>
