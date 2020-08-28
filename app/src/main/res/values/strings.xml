@@ -12,4 +12,26 @@
     <string name="level5">レベル5</string>
     <string name="levelmix">ミックス</string>
     <string name="touchtext">がめんにふれてね</string>
+    <string name="yarareta">やられた～</string>
+    <string name="one_text">1</string>
+    <string name="two_text">2</string>
+    <string name="three_text">3</string>
+    <string name="four_text">4</string>
+    <string name="five_text">5</string>
+    <string name="six_text">6</string>
+    <string name="seven_text">7</string>
+    <string name="eight_text">8</string>
+    <string name="nine_text">9</string>
+    <string name="zero_text">0</string>
+    <string name="ten_text">+10</string>
+    <string name="hint_text">ヒント</string>
+    <string name="hint_text2">５と５で１０</string>
+    <string name="hint_text3">あと〇で１０</string>
+    <string name="back_text">もどる</string>
+    <string name="plus_text">+</string>
+    <string name="syousan">おめでとう!</string>
+    <string name="count_false">まちがい：</string>
+    <string name="move_title">タイトル</string>
+    <string name="move_level">レベルせんたく</string>
+    <string name="timer_cnt">じかん:</string>
 </resources>

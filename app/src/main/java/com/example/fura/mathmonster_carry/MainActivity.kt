@@ -15,12 +15,12 @@ class MainActivity : AppCompatActivity() {
 
         /*ここからボタン入力*/
         plusbtn.setOnClickListener{                            //足し算ボタンを押したとき
-            intent_to_Level.putExtra("Cal", "たしざん")   //intentにputExtra(name:キー, value:渡す値)を入れる
+            intent_to_Level.putExtra("Cal_Main_Level", 1)   //intentにputExtra(name:キー, value:渡す値)を入れる
             startActivity(intent_to_Level)                              //intentを実行
         }
 
         minusbtn.setOnClickListener{                           //引き算ボタンを押したとき
-            intent_to_Level.putExtra("Cal", "ひきざん")   //intentにputExtra(name:キー, value:渡す値)を入れる
+            intent_to_Level.putExtra("Cal_Main_Level", 7)   //intentにputExtra(name:キー, value:渡す値)を入れる
             startActivity(intent_to_Level)                               //intentを実行
         }
 
