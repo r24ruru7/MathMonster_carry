@@ -20,20 +20,20 @@ class ResultActivity : AppCompatActivity() {
         val intent_to_Main = Intent(this, MainActivity::class.java)                        //MainAtivityに遷移
         val intent_to_Level = Intent(this, LevelActivity::class.java)                        //LevelAtivityに(足し算or引き算)
 
-        var timer_minute = 0L
-        var timer_second = 0L
+        var timer_minute = 0L   //時間計測(〇分)
+        var timer_second = 0L   //時間計測(〇秒)
         /******本文******/
 
 
-        for(i in 1..cleartime_from_Break){
-            if(i % 60L  == 0L){
+        for(i in 1..cleartime_from_Break){      //かかった時間を〇分〇秒に分ける
+            if(i % 60L  == 0L){                        //６０秒カウントしたらtimer_minuteに＋１
                 timer_minute ++
             }
-            timer_second = cleartime_from_Break - ( timer_minute * 60 )
+            timer_second = cleartime_from_Break - ( timer_minute * 60 )     //x分だけかかった時間引くことで残りの秒数をだす
         }
 
-        count_false2.text = falseanswer_from_Break.toString()
-        count_time2.text = timer_minute.toString() + "ふん" + timer_second.toString() + "びょう" + cleartime_from_Break.toString()
+        count_false2.text = falseanswer_from_Break.toString()                                       //間違った数を表示
+        count_time2.text = timer_minute.toString() + "ふん" + timer_second.toString() + "びょう"   //かかった時間を表示
 
 
         titleBtn.setOnClickListener {
