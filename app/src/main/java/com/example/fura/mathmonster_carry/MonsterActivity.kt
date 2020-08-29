@@ -25,6 +25,7 @@ class MonsterActivity : AppCompatActivity() {
         val titletext_from_Level = intent.getIntExtra("LevelCalc_Level_Monster", 0)      //LevelActivityから(足し算or引き算、選択レベル)
         val titletext_from_Break = intent.getIntExtra("LevelCalc_Break_Monster",0)       //BreakActivityから(足し算or引き算、選択レベル)
         val nowlevel_from_Break = intent.getIntExtra("NowLevel_Break_Monster",0)       //BreakActivityから(レベルミックス時の現在のレベル)
+        val falsecount_from_Break = intent.getIntExtra("FalseAns_Break_Monster", 0)     //BreakActivityからレベルミックス時の間違えた数
         val timerpast_from_Break = intent.getLongExtra("ClearTime_Break_Monster", 0)    //BreakActivityから(レベルミックス時の計測時間)
 
         /*intent渡し*/
@@ -50,6 +51,7 @@ class MonsterActivity : AppCompatActivity() {
                     1 -> {      //フラグが立っているとき
                         intent_to_Math.putExtra("LevelCalc_Monster_Math", titletext_from_Break)  //足し算or引き算、選択したレベルを渡す
                         intent_to_Math.putExtra("NowLevel_Monster_Math", nowlevel_from_Break)    //レベルミックス時の現在のレベルを渡す
+                        intent_to_Math.putExtra("FalseAns_Monster_Math", falsecount_from_Break) //レベルミックス時の間違えた数を渡す
                         intent_to_Math.putExtra("ClearTime_Monster_Math", timerpast_from_Break)  //レベルミックス時の計測時間を渡す
                         startActivity(intent_to_Math)
                     }

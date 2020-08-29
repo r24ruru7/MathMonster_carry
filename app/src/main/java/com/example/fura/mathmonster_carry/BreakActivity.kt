@@ -24,6 +24,7 @@ class BreakActivity : AppCompatActivity() {
         val titletext_from_Math = intent.getIntExtra("LevelCalc_Math_Break", 0)         //MathActivityから(足し算or引き算、選択レベル)
         val nowlevel_from_Math = intent.getIntExtra("NowLevel_Math_Break", 0)           //MathActivityからレベルミックス時の現在のレベル
         val timerpast_from_Math = intent.getLongExtra("ClearTime_Math_Break", 0)           //MathActivityからレベルミックス時の時間計測
+        val falsecount_from_Math = intent.getIntExtra("FalseAns_Math_Break", 0)         //MathActivityからレベルミックス時の間違えた数
 
         /*intent渡し*/
         val intent_to_Level = Intent(this, LevelActivity::class.java)                        //BreakAtivityに(足し算or引き算、選択レベル)
@@ -46,7 +47,7 @@ class BreakActivity : AppCompatActivity() {
 
             if(titletext_from_Math == 6 || titletext_from_Math == 12){  //レベルミックスの時
                 if(nowlevel_from_Math == 4){    //レベルミックスでレベル５クリア時
-                    intent_to_Result.putExtra("FalseAns_Break_Result", 0)
+                    intent_to_Result.putExtra("FalseAns_Break_Result", falsecount_from_Math)
                     intent_to_Result.putExtra("ClearTime_Break_Result", timerpast_from_Math)
                     intent_to_Result.putExtra("LevelCalc_Break_Result", titletext_from_Math)
                     startActivity(intent_to_Result)
@@ -57,6 +58,7 @@ class BreakActivity : AppCompatActivity() {
                         1 -> {      //フラグが立っているとき
                             intent_to_Monster.putExtra("LevelCalc_Break_Monster", titletext_from_Math)              //足し算or引き算、選択したレベルを渡す
                             intent_to_Monster.putExtra("NowLevel_Break_Monster", nowlevel_from_Math + 1)     //レベルミックス時の現在のレベルを渡す
+                            intent_to_Monster.putExtra("FalseAns_Break_Monster", falsecount_from_Math)              //レベルミックス時の間違えた数を渡す
                             intent_to_Monster.putExtra("ClearTime_Break_Monster", timerpast_from_Math)              //レベルミックス時の計測時間を渡す
                             startActivity(intent_to_Monster)
                         }
