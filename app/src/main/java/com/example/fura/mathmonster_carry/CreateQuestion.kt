@@ -1,5 +1,7 @@
 package com.example.fura.mathmonster_carry
 
+import kotlinx.android.synthetic.main.activity_math.*
+
 
 class CreateQuestion {
 

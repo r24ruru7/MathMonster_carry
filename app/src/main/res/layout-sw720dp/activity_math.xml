@@ -498,7 +498,18 @@
         android:layout_width="35dp"
         android:layout_height="138dp"
         android:layout_marginTop="231dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/wakusen"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ten_tile1"
+        android:layout_width="35dp"
+        android:layout_height="273dp"
+        android:layout_marginTop="379dp"
+        android:layout_marginEnd="450dp"
         android:background="@drawable/wakusen"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -619,7 +630,7 @@
         android:layout_width="35dp"
         android:layout_height="138dp"
         android:layout_marginTop="514dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="60dp"
         android:background="@drawable/wakusen"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
