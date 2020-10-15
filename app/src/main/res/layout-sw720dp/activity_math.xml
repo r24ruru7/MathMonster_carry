@@ -637,6 +637,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/under_tile5_3"
+        android:layout_width="35dp"
+        android:layout_height="138dp"
+        android:layout_marginTop="514dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/wakusen"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/count_time2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

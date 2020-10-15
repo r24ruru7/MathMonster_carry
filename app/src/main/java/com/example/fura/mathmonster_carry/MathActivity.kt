@@ -27,6 +27,7 @@ class MathActivity : AppCompatActivity() {
     var on_one_button = false       //1の位のボタンが押されているかのフラグ
     var on_ten_button = false        //＋１０ボタンのフラグ
     var hint_button_hintlevel = 0   //ヒントの段階のフラグ
+    var hint_button_select_flag = 0 //レベル4用、使用するヒント(5と5で10 → 5, あと〇で10 → 10)
 
     var Number_up_down_level = Triple(0, 0, 0)     //(上側の数字, 下側の数字, 問題のレベル)が入る
     var number_up = 0       //上側の数字が入る
@@ -424,14 +425,14 @@ class MathActivity : AppCompatActivity() {
         }
 
         button13.setOnClickListener {       //あと〇で10のヒントボタン
+            hint_button_select_flag = 10    //足し算レベル4用のフラグ(ヒントボタンはあと〇で10を押した)
             when(number_question){          //このボタンを使えるのは下記のレベルだけ
                 2, 3, 4, 5 -> Auto_LevelHint(1)
             }
-
-
         }
 
         button11.setOnClickListener {       //5と5で10のヒントボタン
+            hint_button_select_flag = 5     //足し算レベル4用のフラグ(ヒントボタンはあと〇で10を押した)
             when(number_question){      //このボタンを使えるのは下記のレベルだけ
                 1, 4, 7, 8, 9, 10, 11, 12 -> Auto_LevelHint(1)
             }
@@ -448,8 +449,9 @@ class MathActivity : AppCompatActivity() {
         when(number_question){
             1 -> Level1_hint(user_click_hintbutton)
             2 -> Level2_hint(user_click_hintbutton)
-
-
+            3 -> Level3_hint(user_click_hintbutton)
+            4 -> Level4_hint(user_click_hintbutton)
+            5 -> Level5_hint(user_click_hintbutton)
         }
     }
 
@@ -515,6 +517,26 @@ class MathActivity : AppCompatActivity() {
                 if(number_up < number_down) Tile_ColorChange2("up", 1, number_up - 1)    //移動するタイルは黄色になる(10番目のタイルになるから)
                 else Tile_ColorChange2("under", 1, number_down - 1)    //移動するタイルは黄色になる(10番目のタイルになるから)
             }
+
+            "after_movetile_Lev3" -> {      //タイルを合体させるとき(あと〇で10)
+                if(number_up < number_down) Tile_ColorChange2("up", 0, number_up - 2)    //移動するタイルはオレンジになる(9番目のタイルになるから)
+                else Tile_ColorChange2("under", 0, number_down - 2)    //移動するタイルはオレンジになる(9番目のタイルになるから)
+                if(number_up < number_down) Tile_ColorChange2("up", 1, number_up - 1)    //移動するタイルは黄色になる(10番目のタイルになるから)
+                else Tile_ColorChange2("under", 1, number_down - 1)    //移動するタイルは黄色になる(10番目のタイルになるから)
+            }
+
+            "after_movetile_Lev5" -> {      //タイルを合体させるとき(あと〇で10)
+                if(number_up < number_down) Tile_ColorChange2("up", 1, number_up - 3)    //移動するタイルは黄色になる(8番目のタイルになるから)
+                else Tile_ColorChange2("under", 1, number_down - 3)    //移動するタイルは黄色になる(8番目のタイルになるから)
+                if(number_up < number_down) Tile_ColorChange2("up", 0, number_up - 2)    //移動するタイルはオレンジになる(9番目のタイルになるから)
+                else Tile_ColorChange2("under", 0, number_down - 2)    //移動するタイルはオレンジになる(9番目のタイルになるから)
+                if(number_up < number_down) Tile_ColorChange2("up", 1, number_up - 1)    //移動するタイルは黄色になる(10番目のタイルになるから)
+                else Tile_ColorChange2("under", 1, number_down - 1)    //移動するタイルは黄色になる(10番目のタイルになるから)
+                if(number_up == 6 || number_down == 6){
+                    if(number_up < number_down) Tile_ColorChange2("up", 0, number_up - 4)    //移動するタイルはオレンジになる(7番目のタイルになるから)
+                    else Tile_ColorChange2("under", 0, number_down - 4)    //移動するタイルはオレンジになる(7番目のタイルになるから)
+                }
+            }
         }
     }
 
@@ -556,7 +578,7 @@ class MathActivity : AppCompatActivity() {
             up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2,
             under_tile1, under_tile2, under_tile3, under_tile4, under_tile5,
             under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2,
-            ten_tile1
+            ten_tile1, under_tile5_3
         )       //使用しているタイルすべて(uptile = 0 ～ 10, undertile = 11 ～ 21, tentile = 22)
 
         val uptiles = listOf(
@@ -602,7 +624,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             "delete" -> {  //タイルを消すモード
-                for(i in 1..23){
+                for(i in 1..24){
                     alltile[i-1].setVisibility(View.GONE)       //画面から消す
                     alltile[i-1].setTranslationX(0.0f)          //x軸の初期位置に戻す
                     alltile[i-1].setTranslationY(0.0f)          //y軸の初期位置に戻す
@@ -610,7 +632,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             "reset" -> {    //タイルを元の位置に戻すモード
-                for(i in 1..23){
+                for(i in 1..24){
                     alltile[i-1].setTranslationX(0.0f)          //x軸の初期位置に戻す
                     alltile[i-1].setTranslationY(0.0f)          //y軸の初期位置に戻す
                 }
@@ -915,6 +937,822 @@ class MathActivity : AppCompatActivity() {
                     }
                     button13.setEnabled(true)       //ヒントボタンを押せるようにする
                     Level2_hint(2)
+                }
+            }
+
+            9 -> {      //アニメーション後、タイルの位置を固定
+                if(number_up < number_down){
+                    for(i in 0..number_up-1){
+                        uptiles[i].setTranslationY(283f)
+                    }
+                }
+                button13.setEnabled(false)
+            }
+        }
+    }
+
+    private fun Level3_hint(user_click_hintbutton: Int){
+        val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile5_2, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10)  //上側のタイルリスト
+        val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile5_2, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10)  //下側のタイルリスト
+
+        Auto_HintLevel_plusminus(user_click_hintbutton)     //ヒントボタンが押されたらhint_button_hintlevelを増減させる
+
+        when(hint_button_hintlevel){    //ヒントの段階に応じてヒントを与える
+
+            0 -> {      //ヒント表示なし
+                button12.setEnabled(false)      //戻るボタンを押せなくする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+            }
+
+            1 -> {      //横にタイルを表示
+                button12.setEnabled(true)       //戻るボタンを押せるようにする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                Tile_ColorChange1("start")  //タイルの色変更
+            }
+
+            2 -> {      //8のタイルに空白のタイルを1つ追加
+                if(user_click_hintbutton == 1){
+                    Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
+                    if(number_up < number_down){    //下が8の時
+                        undertiles[9].setVisibility(View.VISIBLE)
+                        undertiles[10].setVisibility(View.VISIBLE)
+                        undertiles[9].setBackgroundResource(R.drawable.wakusen3)
+                        undertiles[10].setBackgroundResource(R.drawable.wakusen3)
+                    }
+                    else {  //上が8の時
+                        uptiles[9].setVisibility(View.VISIBLE)
+                        uptiles[10].setVisibility(View.VISIBLE)
+                        uptiles[9].setBackgroundResource(R.drawable.wakusen3)
+                        uptiles[10].setBackgroundResource(R.drawable.wakusen3)
+                    }
+                }
+                else {
+                    Level3_hint(2)
+                }
+            }
+
+            3 -> {      //小さい数字のほうのタイル1つを上にずらすアニメーション
+                if(user_click_hintbutton == 1){
+                    if(number_up < number_down){    //下が8の時
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", -27f)  //上のタイルの一番上にあるタイルを少しずらす
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", -27f)  //上のタイルの二番目に上にあるタイルを少しずらす
+                        Move_Animetion(uptile_moveY1)
+                        Move_Animetion(uptile_moveY2)
+                    }
+                    else {  //上が8の時
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", -27f)  //下のタイルの二番目に上にあるタイルを少しずらす
+                        Move_Animetion(undertile_moveY1)
+                        Move_Animetion(undertile_moveY2)
+                    }
+
+                    Level3_hint(1)
+                }
+                else {
+                    Level3_hint(2)
+                }
+
+            }
+
+            4 -> {      //ずらしたタイルの位置を固定
+                Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
+                if(number_up < number_down){    //下が8の時
+                    uptiles[number_up - 1].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
+                    uptiles[number_up - 2].setTranslationY(-27f)    //上のタイルの二番目に上にあるタイルをずらした位置に固定
+                }
+                else {  //上が8の時
+                    undertiles[number_down - 1].setTranslationY(-27f)    //下のタイルの一番上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 2].setTranslationY(-27f)    //下のタイルの二番目に上にあるタイルをずらした位置に固定
+                }
+                if(user_click_hintbutton == 2){
+                    if(number_up < number_down){    //下が8の時
+                        undertiles[9].setVisibility(View.VISIBLE)  //戻ってきたとき空白のタイル9を表示する
+                        undertiles[10].setVisibility(View.VISIBLE)  //戻ってきたとき空白のタイル10を表示する
+                    }
+                    else {  //上が8の時
+                        uptiles[9].setVisibility(View.VISIBLE) //戻ってきたとき空白のタイル9を表示する
+                        uptiles[10].setVisibility(View.VISIBLE) //戻ってきたとき空白のタイル10を表示する
+                    }
+                }
+            }
+
+            5 -> {      //タイルを合体させて10のタイルにするアニメーション1
+                if(user_click_hintbutton == 1){
+                    if(number_up < number_down){    //下が8の時
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        Move_Animetion(uptile_moveY1)
+                        Move_Animetion(uptile_moveY2)
+                        Tile_ColorChange1("after_movetile_Lev3")     //移動後のタイルの色を黄色にする
+                        FadeTile(2, undertiles[9])     //空白のタイルを隠す
+                        FadeTile(2, undertiles[10])     //空白のタイルを隠す
+                    }
+                    else {  //上が8の時
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        // ( ( (10 - number_down) * -27) - 40) - (27 * 9)　下側のタイルの一番上まで移動(10-num-1)　→　上側のタイル１に移動(40)　→　上のタイルの一番上まで移動(27*9)
+                        Move_Animetion(undertile_moveY1)
+                        Move_Animetion(undertile_moveY2)
+                        Tile_ColorChange1("after_movetile_Lev3")     //移動後のタイルの色を黄色にする
+                        FadeTile(2, uptiles[9])        //空白のタイルを隠す
+                        FadeTile(2, uptiles[10])        //空白のタイルを隠す
+                    }
+                    Level3_hint(1)
+                }
+                else {
+                    if(number_total == 10){     //答えが10の時は戻ってきたときここでヒントボタンが押せるようになる
+                        button13.setEnabled(true)
+                    }
+                    Tile_ColorChange1("start")     //移動後のタイルの色を交互にさせる
+                    Level3_hint(2)
+                }
+            }
+
+            6 -> {      //タイルを合体させて10のタイルにするアニメーション2
+                if(user_click_hintbutton == 1){
+                    if(number_total == 10){     //答えが10の時はもうヒントがない
+                        button13.setEnabled(false)
+                    }
+                    if(number_up < number_down){    //下が8の時
+                        uptiles[number_up - 1].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 2].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        undertiles[9].setVisibility(View.GONE)
+                        undertiles[10].setVisibility(View.GONE)     //空白のタイルを消す
+
+                        Handler().postDelayed({     //タイル合体後、10の位に移動する
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", -390f)    //10の位に移動
+                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationX", -390f)    //10の位に移動
+                            Move_Animetion(uptile_moveX1)
+                            Move_Animetion(uptile_moveX2)
+                            for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
+                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                Move_Animetion(undertile_moveX)
+                            }
+                            Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
+                                FadeTile(2, uptiles[number_up - 1])     //一つだけ動かしたタイルを消す
+                                FadeTile(2, uptiles[number_up - 2])     //一つだけ動かしたタイルを消す
+                                for(i in 5..number_down){
+                                    FadeTile(2, undertiles[i])      //5と6より上のタイルを消す
+                                }
+                                FadeTile(1, ten_tile1)      //10のタイルをフェードイン
+                                Level3_hint(1)
+                            },1500)
+                        },1500)
+                    }
+                    else {  //上が8の時
+                        undertiles[number_up - 1].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 2].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        uptiles[9].setVisibility(View.GONE)        //空白のタイルを消す
+                        uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
+
+                        Handler().postDelayed({     //タイル合体後、10の位に移動する
+                            var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", -390f)    //10の位に移動する
+                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationX", -390f)    //10の位に移動する
+                            Move_Animetion(undertile_moveX1)
+                            Move_Animetion(undertile_moveX2)
+                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            Move_Animetion(undertile_moveY1)
+                            Move_Animetion(undertile_moveY2)
+
+                            for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
+                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                Move_Animetion(uptile_moveX)
+                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                Move_Animetion(uptile_moveY)
+
+                            }
+
+                            Handler().postDelayed({     //10の位に移動後、10のタイルに変化
+                                FadeTile(2, undertiles[number_down - 1])        //一つだけ動かしたタイルを消す
+                                FadeTile(2, undertiles[number_down - 2])        //一つだけ動かしたタイルを消す
+                                for(i in 5..number_up){
+                                    FadeTile(2, uptiles[i])     //5と6より上のタイルを消す
+                                }
+                                FadeTile(1, ten_tile1)      //10のタイルをフェードイン
+                                Level3_hint(1)
+                            },1500)
+                        },1500)
+                    }
+                }
+                else {
+                    Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                    Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                    ten_tile1.setVisibility(View.GONE)  //戻ってきたとき10のタイルを表示
+                    Level3_hint(2)
+                }
+            }
+
+            7 -> {      //アニメーション後、タイルの位置を固定
+                if(number_up < number_down){    //下が8の時
+                    uptiles[number_up - 1].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 2].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 1].setVisibility(View.GONE)     //移動したタイルは消す
+                    uptiles[number_up - 2].setVisibility(View.GONE)     //移動したタイルは消す
+                    for(i in 5..number_down){
+                        undertiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        undertiles[i].setVisibility(View.GONE)     //移動したタイルは消す
+                    }
+                    ten_tile1.setVisibility(View.VISIBLE)   //10のタイルが表示される
+                }
+                else {    //上が8の時
+                    undertiles[number_down - 1].setTranslationX(-390f)       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationX(-390f)       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 1].setVisibility(View.GONE)        //移動したタイルは消す
+                    undertiles[number_down - 2].setVisibility(View.GONE)        //移動したタイルは消す
+                    for(i in 5..number_up){
+                        uptiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        uptiles[i].setTranslationY(283f)        //10の位の位置に固定
+                        uptiles[i].setVisibility(View.GONE)     //移動したタイルは消す
+                    }
+                    ten_tile1.setVisibility(View.VISIBLE)       //10のタイルが表示される
+                }
+            }
+
+            8 -> {      //下が8の時のみ、上に残っているタイルを下に持ってくる
+                if(user_click_hintbutton == 1){
+                    if(number_up < number_down){
+                        for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
+                            Move_Animetion(uptile_moveY)
+                        }
+                        Level3_hint(1)
+                    }
+                    else{
+                        Level3_hint(1)
+                    }
+                }
+                else {
+                    for(i in 0..number_up-1){
+                        uptiles[i].setTranslationY(0f)  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
+                    }
+                    button13.setEnabled(true)       //ヒントボタンを押せるようにする
+                    Level3_hint(2)
+                }
+            }
+
+            9 -> {      //アニメーション後、タイルの位置を固定
+                if(number_up < number_down){
+                    for(i in 0..number_up-1){
+                        uptiles[i].setTranslationY(283f)
+                    }
+                }
+                button13.setEnabled(false)
+            }
+        }
+    }
+
+    private fun Level4_hint(user_click_hintbutton: Int){
+        val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile5_2, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10)  //上側のタイルリスト
+        val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile5_2, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10)  //下側のタイルリスト
+
+        Auto_HintLevel_plusminus(user_click_hintbutton)     //ヒントボタンが押されたらhint_button_hintlevelを増減させる
+
+        when(hint_button_hintlevel){    //ヒントの段階に応じてヒントを与える
+
+            0 -> {      //ヒント表示なし
+                button11.setEnabled(true)
+                button13.setEnabled(true)
+                button12.setEnabled(false)      //戻るボタンを押せなくする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                under_tile5_3.setVisibility(View.GONE)
+            }
+
+            1 -> {      //横にタイルを表示
+                when(hint_button_select_flag){  //どっちのボタンが押されたか
+                    5 -> {
+                        button13.setEnabled(false)  //5と5で10を押したらあと〇で10は押せなくなる
+                    }
+                    10 -> {
+                        button11.setEnabled(false)  //あと〇で10を押したら5と5で10は押せなくなる
+                    }
+                }
+                button12.setEnabled(true)       //戻るボタンを押せるようにする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                Tile_ColorChange1("start")  //タイルの色変更
+            }
+
+            2 -> {      //5と5のタイルを合体
+                if(user_click_hintbutton == 1){ //ヒントボタンを押したとき
+                    when(hint_button_select_flag){
+                        5 -> {
+                            var uptile52_moveX = ObjectAnimator.ofFloat(uptiles[5], "translationX", -390f)  //uptileのY軸を指定された分だけ下げる
+                            Move_Animetion(uptile52_moveX)
+                            var uptile52_moveY = ObjectAnimator.ofFloat(uptiles[5], "translationY", 148f)  //uptileのY軸を指定された分だけ下げる
+                            Move_Animetion(uptile52_moveY)
+                            var undertile52_moveX = ObjectAnimator.ofFloat(undertiles[5], "translationX", -390f)  //undertileのY軸を指定された分だけ下げる
+                            Move_Animetion(undertile52_moveX)
+
+                            Handler().postDelayed({         //5と5のタイルが10に変化するアニメーション
+                                FadeTile(2, uptiles[5])
+                                FadeTile(2, undertiles[5])
+                                FadeTile(1, ten_tile1)
+                                Level4_hint(1)
+                            }, 1500)
+                        }
+                        10 -> {
+
+                        }
+                    }
+
+                }
+                else{   //戻るボタンを押したとき
+                    Level4_hint(2)
+                }
+
+            }
+
+            3 -> {
+                when(hint_button_select_flag){
+                    5 -> {
+                        Tile_Position("reset", "all")   //全てのタイルを初期値に戻す
+                        uptiles[5].setTranslationX(-390f)       //上側5のタイルをX座標を移動
+                        uptiles[5].setTranslationY(148f)        //上側5のタイルをY座標を移動
+                        undertiles[5].setTranslationX(-390f)    //下側5のタイルをX座標を移動
+                        uptiles[5].setVisibility(View.GONE)     //上側5のタイルを見えなくする
+                        undertiles[5].setVisibility(View.GONE)  //下側5のタイルを見えなくする
+                        ten_tile1.setVisibility(View.VISIBLE)   //10のタイルを出現させる
+                        if(user_click_hintbutton == 1 && number_up == 5 && number_down == 5){   //上下が5の時のみ次へ飛ぶ
+                            Level4_hint(1)
+                        }
+                        if(user_click_hintbutton == 2 && number_up == 5 && number_down == 5){   //上下が5の時のみ前に戻る
+                            Level4_hint(2)
+                        }
+                    }
+                    10 -> {
+
+                    }
+                }
+
+            }
+
+            4 -> {
+                if(user_click_hintbutton == 1){
+                    when(hint_button_select_flag){
+                        5 -> {
+                            Tile_ColorChange1("after_movetile_Lev1")     //移動後のタイルの色を交互にさせる
+                            for(i in 6..number_up){     //上側のタイルを下のタイルに合体させるアニメーション
+                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (418 - 27 * (number_down - 5)).toFloat())  //uptileのY軸を指定された分だけ下げる
+                                Move_Animetion(uptile_moveY)
+                            }
+                            for(i in 6..number_down){   //下側のタイルを上のタイルに合体させるアニメーション
+                                var undertile_moveY = ObjectAnimator.ofFloat(undertiles[i], "translationY", 135f)  //undertileのY軸を指定された分だけ下げる
+                                Move_Animetion(undertile_moveY)
+                            }
+                            Level4_hint(1)
+                        }
+                        10 -> {
+
+                        }
+                    }
+
+                }
+                else {
+                    Tile_ColorChange1("start")  //戻るボタンが押されたら変更していた色をもとに戻す
+                    when(hint_button_select_flag){
+                        5 -> {
+                            button11.setEnabled(true)
+                            under_tile5_3.setVisibility(View.GONE)
+                        }
+                        10 -> {
+                            button13.setEnabled(true)
+                        }
+                    }
+
+                    Level4_hint(2)
+                }
+            }
+
+            5 -> {
+                when(hint_button_select_flag){
+                    5 -> {
+                        for(i in 6..number_up){
+                            uptiles[i].setTranslationY((418 - 27 * (number_down - 5)).toFloat())
+                        }
+                        for(i in 6..number_down){
+                            undertiles[i].setTranslationY(135f)
+                        }
+                        if(number_total < 15){
+                            button11.setEnabled(false)
+                        }
+                    }
+                    10 -> {
+
+                    }
+                }
+            }
+
+            6 -> {
+                if(user_click_hintbutton == 1){
+                    when(hint_button_select_flag){
+                        5 -> {
+                            for(i in 1..(number_down - 5) ){
+                                FadeTile(2, undertiles[5+i])
+                            }
+                            for(i in 1..(10 - number_down) ){
+                                FadeTile(2, uptiles[5+i])
+                            }
+                            FadeTile(1, under_tile5_3)
+                            Level4_hint(1)
+                            Handler().postDelayed({         //5と5のタイルが10に変化するアニメーション
+
+                            }, 1500)
+
+                        }
+                        10 -> {
+
+                        }
+                    }
+                }
+                else{
+                    when(hint_button_select_flag){
+                        5 -> {
+                            under_tile5_3.setVisibility(View.GONE)
+                            button11.setEnabled(true)
+                            Level4_hint(2)
+                        }
+                        10 -> {
+
+                        }
+                    }
+
+                }
+
+            }
+
+            7 -> {
+                when(hint_button_select_flag){
+                    5 -> {
+                        under_tile5_3.setVisibility(View.VISIBLE)
+                        button11.setEnabled(false)
+                        button13.setEnabled(false)
+                    }
+                    10 -> {
+
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    //足し算レベル5のヒント
+    private fun Level5_hint(user_click_hintbutton: Int){
+
+        val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile5_2, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10)  //上側のタイルリスト
+        val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile5_2, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10)  //下側のタイルリスト
+
+        Auto_HintLevel_plusminus(user_click_hintbutton)     //ヒントボタンが押されたらhint_button_hintlevelを増減させる
+
+        when(hint_button_hintlevel){    //ヒントの段階に応じてヒントを与える
+
+            0 -> {      //ヒント表示なし
+                button12.setEnabled(false)      //戻るボタンを押せなくする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+            }
+
+            1 -> {      //横にタイルを表示
+                button12.setEnabled(true)       //戻るボタンを押せるようにする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                Tile_ColorChange1("start")  //タイルの色変更
+            }
+
+            2 -> {      //7のタイルに空白のタイルを1つ追加
+                if(user_click_hintbutton == 1){
+                    Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
+                    if(number_up < number_down){    //下が7の時
+                        undertiles[8].setVisibility(View.VISIBLE)
+                        undertiles[9].setVisibility(View.VISIBLE)
+                        undertiles[10].setVisibility(View.VISIBLE)
+                        undertiles[8].setBackgroundResource(R.drawable.wakusen3)
+                        undertiles[9].setBackgroundResource(R.drawable.wakusen3)
+                        undertiles[10].setBackgroundResource(R.drawable.wakusen3)
+                        if(number_down == 6){   //6の時は4つ目のタイルも
+                            undertiles[7].setVisibility(View.VISIBLE)
+                            undertiles[7].setBackgroundResource(R.drawable.wakusen3)
+                        }
+                    }
+                    else {  //上が7の時
+                        uptiles[8].setVisibility(View.VISIBLE)
+                        uptiles[9].setVisibility(View.VISIBLE)
+                        uptiles[10].setVisibility(View.VISIBLE)
+                        uptiles[8].setBackgroundResource(R.drawable.wakusen3)
+                        uptiles[9].setBackgroundResource(R.drawable.wakusen3)
+                        uptiles[10].setBackgroundResource(R.drawable.wakusen3)
+                        if(number_up == 6){   //6の時は4つ目のタイルも
+                            uptiles[7].setVisibility(View.VISIBLE)
+                            uptiles[7].setBackgroundResource(R.drawable.wakusen3)
+                        }
+                    }
+                }
+                else {
+                    Level5_hint(2)
+                }
+            }
+
+            3 -> {      //小さい数字のほうのタイル1つを上にずらすアニメーション
+                if(user_click_hintbutton == 1){
+                    if(number_up < number_down){    //下が7の時
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", -27f)  //上のタイルの一番上にあるタイルを少しずらす
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", -27f)  //上のタイルの二番目に上にあるタイルを少しずらす
+                        var uptile_moveY3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationY", -27f)  //上のタイルの三番目に上にあるタイルを少しずらす
+                        Move_Animetion(uptile_moveY1)
+                        Move_Animetion(uptile_moveY2)
+                        Move_Animetion(uptile_moveY3)
+                        if(number_down == 6){   //6の時は4つ目のタイルも
+                            var uptile_moveY4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationY", -27f)  //上のタイルの四番目に上にあるタイルを少しずらす
+                            Move_Animetion(uptile_moveY4)
+                        }
+                    }
+                    else {  //上が7の時
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", -27f)  //下のタイルの二番目に上にあるタイルを少しずらす
+                        var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", -27f)  //下のタイルの三番目に上にあるタイルを少しずらす
+                        Move_Animetion(undertile_moveY1)
+                        Move_Animetion(undertile_moveY2)
+                        Move_Animetion(undertile_moveY3)
+                        if(number_up == 6){ //6の時は4つ目のタイルも
+                            var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", -27f)  //下のタイルの四番目に上にあるタイルを少しずらす
+                            Move_Animetion(undertile_moveY4)
+                        }
+                    }
+
+                    Level5_hint(1)
+                }
+                else {
+                    Level5_hint(2)
+                }
+
+            }
+
+            4 -> {      //ずらしたタイルの位置を固定
+                Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
+                if(number_up < number_down){    //下が7の時
+                    uptiles[number_up - 1].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
+                    uptiles[number_up - 2].setTranslationY(-27f)    //上のタイルの二番目にあるタイルをずらした位置に固定
+                    uptiles[number_up - 3].setTranslationY(-27f)    //上のタイルの三番目にあるタイルをずらした位置に固定
+                    if(number_down == 6){   //6の時は4つ目のタイルも
+                        uptiles[number_up - 4].setTranslationY(-27f)    //上のタイルの四番目にあるタイルをずらした位置に固定
+                    }
+                }
+                else {  //上が7の時
+                    undertiles[number_down - 1].setTranslationY(-27f)    //下のタイルの一番上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 2].setTranslationY(-27f)    //下のタイルの二番目に上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 3].setTranslationY(-27f)    //下のタイルの三番目に上にあるタイルをずらした位置に固定
+                    if(number_up == 6){ //6の時は4つ目のタイルも
+                        undertiles[number_down - 4].setTranslationY(-27f)    //下のタイルの四番目に上にあるタイルをずらした位置に固定
+                    }
+                }
+                if(user_click_hintbutton == 2){
+                    if(number_up < number_down){    //下が7の時
+                        undertiles[8].setVisibility(View.VISIBLE)  //戻ってきたとき空白のタイル8を表示する
+                        undertiles[9].setVisibility(View.VISIBLE)  //戻ってきたとき空白のタイル9を表示する
+                        undertiles[10].setVisibility(View.VISIBLE)  //戻ってきたとき空白のタイル10を表示する
+                        if(number_down == 6){   //6の時は4つ目のタイルも
+                            undertiles[7].setVisibility(View.VISIBLE)  //戻ってきたとき空白のタイル7を表示する
+                        }
+                    }
+                    else {  //上が7の時
+                        uptiles[8].setVisibility(View.VISIBLE) //戻ってきたとき空白のタイル8を表示する
+                        uptiles[9].setVisibility(View.VISIBLE) //戻ってきたとき空白のタイル9を表示する
+                        uptiles[10].setVisibility(View.VISIBLE) //戻ってきたとき空白のタイル10を表示する
+                        if(number_up == 6){ //6の時は4つ目のタイルも
+                            uptiles[7].setVisibility(View.VISIBLE) //戻ってきたとき空白のタイル7を表示する
+                        }
+                    }
+                }
+            }
+
+            5 -> {      //タイルを合体させて10のタイルにするアニメーション1
+                if(user_click_hintbutton == 1){
+                    if(number_up < number_down){    //下が7の時
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        Move_Animetion(uptile_moveY1)
+                        Move_Animetion(uptile_moveY2)
+                        Move_Animetion(uptile_moveY3)
+                        if(number_down == 6){   //6の時は4つ目のタイルも
+                            var uptile_moveY4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                            Move_Animetion(uptile_moveY4)
+                            FadeTile(2, undertiles[7])     //空白のタイルを隠す
+                        }
+                        Tile_ColorChange1("after_movetile_Lev5")     //移動後のタイルの色を黄色にする
+                        FadeTile(2, undertiles[8])     //空白のタイルを隠す
+                        FadeTile(2, undertiles[9])     //空白のタイルを隠す
+                        FadeTile(2, undertiles[10])     //空白のタイルを隠す
+
+                    }
+                    else {  //上が7の時
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        // ( ( (10 - number_down) * -27) - 40) - (27 * 9)　下側のタイルの一番上まで移動(10-num-1)　→　上側のタイル１に移動(40)　→　上のタイルの一番上まで移動(27*9)
+                        Move_Animetion(undertile_moveY1)
+                        Move_Animetion(undertile_moveY2)
+                        Move_Animetion(undertile_moveY3)
+                        if(number_up == 6){ //6の時は4つ目のタイルも
+                            var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                            Move_Animetion(undertile_moveY4)
+                            FadeTile(2, uptiles[7])        //空白のタイルを隠す
+                        }
+                        Tile_ColorChange1("after_movetile_Lev5")     //移動後のタイルの色を黄色にする
+                        FadeTile(2, uptiles[8])        //空白のタイルを隠す
+                        FadeTile(2, uptiles[9])        //空白のタイルを隠す
+                        FadeTile(2, uptiles[10])        //空白のタイルを隠す
+                    }
+                    Level5_hint(1)
+                }
+                else {
+                    if(number_total == 10){     //答えが10の時は戻ってきたときここでヒントボタンが押せるようになる
+                        button13.setEnabled(true)
+                    }
+                    Tile_ColorChange1("start")     //移動後のタイルの色を交互にさせる
+                    Level5_hint(2)
+                }
+            }
+
+            6 -> {      //タイルを合体させて10のタイルにするアニメーション2
+                if(user_click_hintbutton == 1){
+                    if(number_total == 10){     //答えが10の時はもうヒントがない
+                        button13.setEnabled(false)
+                    }
+                    if(number_up < number_down){    //下が7の時
+                        uptiles[number_up - 1].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 2].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 3].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        undertiles[8].setVisibility(View.GONE)
+                        undertiles[9].setVisibility(View.GONE)
+                        undertiles[10].setVisibility(View.GONE)     //空白のタイルを消す
+                        if(number_down == 6){   //6の時は4つ目のタイルも
+                            uptiles[number_up - 4].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                            undertiles[7].setVisibility(View.GONE)
+                        }
+
+                        Handler().postDelayed({     //タイル合体後、10の位に移動する
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", -390f)    //10の位に移動
+                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationX", -390f)    //10の位に移動
+                            var uptile_moveX3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationX", -390f)    //10の位に移動
+                            Move_Animetion(uptile_moveX1)
+                            Move_Animetion(uptile_moveX2)
+                            Move_Animetion(uptile_moveX3)
+                            if(number_down == 6){   //6の時は4つ目のタイルも
+                                var uptile_moveX4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationX", -390f)    //10の位に移動
+                                Move_Animetion(uptile_moveX4)
+                            }
+                            for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
+                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                Move_Animetion(undertile_moveX)
+                            }
+                            Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
+                                FadeTile(2, uptiles[number_up - 1])     //一つだけ動かしたタイルを消す
+                                FadeTile(2, uptiles[number_up - 2])     //一つだけ動かしたタイルを消す
+                                FadeTile(2, uptiles[number_up - 3])     //一つだけ動かしたタイルを消す
+                                if(number_down == 6){   //6の時は4つ目のタイルも
+                                    FadeTile(2, uptiles[number_up - 4])     //一つだけ動かしたタイルを消す
+                                }
+                                for(i in 5..number_down){
+                                    FadeTile(2, undertiles[i])      //5と6より上のタイルを消す
+                                }
+                                FadeTile(1, ten_tile1)      //10のタイルをフェードイン
+                                Level5_hint(1)
+                            },1500)
+                        },1500)
+                    }
+                    else {  //上が8の時
+                        undertiles[number_up - 1].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 2].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 3].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        uptiles[8].setVisibility(View.GONE)        //空白のタイルを消す
+                        uptiles[9].setVisibility(View.GONE)        //空白のタイルを消す
+                        uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
+                        if(number_up == 6){ //6の時は4つ目のタイルも
+                            undertiles[number_up - 4].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                            uptiles[7].setVisibility(View.GONE)        //空白のタイルを消す
+                        }
+
+                        Handler().postDelayed({     //タイル合体後、10の位に移動する
+                            var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", -390f)    //10の位に移動する
+                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationX", -390f)    //10の位に移動する
+                            var undertile_moveX3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationX", -390f)    //10の位に移動する
+                            Move_Animetion(undertile_moveX1)
+                            Move_Animetion(undertile_moveX2)
+                            Move_Animetion(undertile_moveX3)
+                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            Move_Animetion(undertile_moveY1)
+                            Move_Animetion(undertile_moveY2)
+                            Move_Animetion(undertile_moveY3)
+                            if(number_up == 6){ //6の時は4つ目のタイルも
+                                var undertile_moveX4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationX", -390f)    //10の位に移動する
+                                Move_Animetion(undertile_moveX4)
+                                var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                                Move_Animetion(undertile_moveY4)
+                            }
+
+                            for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
+                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                Move_Animetion(uptile_moveX)
+                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                Move_Animetion(uptile_moveY)
+
+                            }
+
+                            Handler().postDelayed({     //10の位に移動後、10のタイルに変化
+                                FadeTile(2, undertiles[number_down - 1])        //一つだけ動かしたタイルを消す
+                                FadeTile(2, undertiles[number_down - 2])        //一つだけ動かしたタイルを消す
+                                FadeTile(2, undertiles[number_down - 3])        //一つだけ動かしたタイルを消す
+                                if(number_up == 6){ //6の時は4つ目のタイルも
+                                    FadeTile(2, undertiles[number_down - 4])        //一つだけ動かしたタイルを消す
+                                }
+                                for(i in 5..number_up){
+                                    FadeTile(2, uptiles[i])     //5と6より上のタイルを消す
+                                }
+                                FadeTile(1, ten_tile1)      //10のタイルをフェードイン
+                                Level5_hint(1)
+                            },1500)
+                        },1500)
+                    }
+                }
+                else {
+                    Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                    Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                    ten_tile1.setVisibility(View.GONE)  //戻ってきたとき10のタイルを表示
+                    Level5_hint(2)
+                }
+            }
+
+            7 -> {      //アニメーション後、タイルの位置を固定
+                if(number_up < number_down){    //下が8の時
+                    uptiles[number_up - 1].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 2].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 3].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 1].setVisibility(View.GONE)     //移動したタイルは消す
+                    uptiles[number_up - 2].setVisibility(View.GONE)     //移動したタイルは消す
+                    uptiles[number_up - 3].setVisibility(View.GONE)     //移動したタイルは消す
+                    if(number_down == 6){   //6の時は4つ目のタイルも
+                        uptiles[number_up - 4].setTranslationX(-390f)       //10の位の位置に固定
+                        uptiles[number_up - 4].setVisibility(View.GONE)     //移動したタイルは消す
+                    }
+                    for(i in 5..number_down){
+                        undertiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        undertiles[i].setVisibility(View.GONE)     //移動したタイルは消す
+                    }
+                    ten_tile1.setVisibility(View.VISIBLE)   //10のタイルが表示される
+                }
+                else {    //上が8の時
+                    undertiles[number_down - 1].setTranslationX(-390f)       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationX(-390f)       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 3].setTranslationX(-390f)       //10の位の位置に固定
+                    undertiles[number_down - 3].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 1].setVisibility(View.GONE)        //移動したタイルは消す
+                    undertiles[number_down - 2].setVisibility(View.GONE)        //移動したタイルは消す
+                    undertiles[number_down - 3].setVisibility(View.GONE)        //移動したタイルは消す
+                    if(number_up == 6){ //6の時は4つ目のタイルも
+                        undertiles[number_down - 4].setTranslationX(-390f)       //10の位の位置に固定
+                        undertiles[number_down - 4].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                        undertiles[number_down - 4].setVisibility(View.GONE)        //移動したタイルは消す
+                    }
+                    for(i in 5..number_up){
+                        uptiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        uptiles[i].setTranslationY(283f)        //10の位の位置に固定
+                        uptiles[i].setVisibility(View.GONE)     //移動したタイルは消す
+                    }
+                    ten_tile1.setVisibility(View.VISIBLE)       //10のタイルが表示される
+                }
+            }
+
+            8 -> {      //下が8の時のみ、上に残っているタイルを下に持ってくる
+                if(user_click_hintbutton == 1){
+                    if(number_up < number_down){
+                        for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
+                            Move_Animetion(uptile_moveY)
+                        }
+                        Level5_hint(1)
+                    }
+                    else{
+                        Level5_hint(1)
+                    }
+                }
+                else {
+                    for(i in 0..number_up-1){
+                        uptiles[i].setTranslationY(0f)  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
+                    }
+                    button13.setEnabled(true)       //ヒントボタンを押せるようにする
+                    Level5_hint(2)
                 }
             }
 
