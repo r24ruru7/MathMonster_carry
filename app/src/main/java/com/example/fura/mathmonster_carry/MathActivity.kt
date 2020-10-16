@@ -70,7 +70,7 @@ class MathActivity : AppCompatActivity() {
 
 
 
-
+        //テスト
 
         /******本文******/
 
