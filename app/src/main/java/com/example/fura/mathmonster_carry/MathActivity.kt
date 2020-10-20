@@ -38,6 +38,7 @@ class MathActivity : AppCompatActivity() {
     var answer_one = 0      //一の位の答えが入る
     var answer_ten = 0      //十の位の答えが入る
     var answer_total = 0    //入力した解答
+    //手手テスト
 
     val Titles = arrayOf(
         "レベル1", "レベル2", "レベル3", "レベル4", "レベル5", "レベル6",
