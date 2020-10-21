@@ -455,6 +455,8 @@ class MathActivity : AppCompatActivity() {
             4 -> Level4_hint(user_click_hintbutton)
             5 -> Level5_hint(user_click_hintbutton)
             7 -> Level7_hint(user_click_hintbutton)
+            8 -> Level8_hint(user_click_hintbutton)
+            9 -> Level9_hint(user_click_hintbutton)
         }
     }
 
@@ -595,6 +597,48 @@ class MathActivity : AppCompatActivity() {
                 }
                 else{
                     //色変更なし
+                }
+            }
+
+            "after_movetile_Lev8" -> {
+                if((10 - number_down) <= (number_up - 10)){
+                    if((number_up - 10) < 5) {
+                        Tile_ColorChange2("minus_10", (number_up - 10) % 2, 5)
+                        Tile_ColorChange2("minus_10", (number_up - 10 + 1) % 2, 4)
+                    }
+                    else {
+                        Tile_ColorChange2("minus_10", (number_up - 10 + 1) % 2, 5)
+                        Tile_ColorChange2("minus_10", (number_up - 10) % 2, 4)
+                    }
+                }
+                else{
+                    Tile_ColorChange2("up", 0, 0)
+                }
+            }
+
+            "after_movetile_Lev9" -> {
+                if((10 - number_down) <= (number_up - 10)){
+                    if((number_up - 10) < 5) {
+                        Tile_ColorChange2("minus_10", (number_up - 10 + 1) % 2, 5)
+                        Tile_ColorChange2("minus_10", (number_up - 10) % 2, 4)
+                        Tile_ColorChange2("minus_10", (number_up - 10 + 1) % 2, 3)
+                    }
+                    else {
+                        Tile_ColorChange2("minus_10", (number_up - 10) % 2, 5)
+                        Tile_ColorChange2("minus_10", (number_up - 10 + 1) % 2, 4)
+                        Tile_ColorChange2("minus_10", (number_up - 10) % 2, 3)
+                    }
+                }
+                else{
+                    when(number_total){
+                        5 -> {
+                            Tile_ColorChange2("up", 1, 1)
+                            Tile_ColorChange2("up", 0, 0)
+                        }
+                        4 -> {
+                            Tile_ColorChange2("up", 0, 0)
+                        }
+                    }
                 }
             }
         }
@@ -2628,6 +2672,506 @@ class MathActivity : AppCompatActivity() {
                 under_tile5_3.setTranslationY(267f)
                 uptiles_more[5].setVisibility(View.GONE)
                 for(i in 0..3) {
+                    uptiles[i].setVisibility(View.GONE)
+                }
+            }
+        }
+    }
+
+    private fun  Level8_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+        val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
+        val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
+        val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
+
+        Auto_HintLevel_plusminus(user_click_hintbutton)     //ヒントボタンが押されたらhint_button_hintlevelを増減させる
+
+        when(hint_button_hintlevel) {    //ヒントの段階に応じてヒントを与える
+            0 -> {      //ヒント表示なし
+                button12.setEnabled(false)      //戻るボタンを押せなくする
+                Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+            }
+
+            1 -> {      //横にタイルを表示
+                button12.setEnabled(true)       //戻るボタンを押せるようにする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                Tile_ColorChange1("start_Minus")  //タイルの色変更
+            }
+
+            2 -> {  //10のタイルを右に移動するアニメーション
+                if(user_click_hintbutton == 1){
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    Move_Animetion(uptile_moveX)
+                    Handler().postDelayed({
+                        FadeTile(2, ten_tile2)        //10のタイルを消す
+                        for(i in 0..5){
+                            FadeTile(1, uptiles_more[i])
+                        }
+                        Level8_hint(1)
+                    },1500)
+
+                }
+                else {
+                    Level8_hint(2)
+                }
+
+            }
+
+            3 -> {  //移動したタイルを固定
+                ten_tile2.setTranslationX(140f)
+                ten_tile2.setVisibility(View.GONE)
+                for(i in 0..5){
+                    uptiles_more[i].setVisibility(View.VISIBLE)
+                }
+            }
+
+            4 -> {  //１０の塊から8個のタイルを移動させるアニメーション
+                if(user_click_hintbutton == 1){
+                    for(i in 0..3){ //８のタイルを右下に移動
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        Move_Animetion(uptile_moveX)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 283f)
+                        Move_Animetion(uptile_moveY)
+                    }
+                    Handler().postDelayed({
+                        for(i in 0..3){ //８のタイルを消す
+                            FadeTile(2, uptiles_more[i])
+                        }
+                        for(i in 0..10){    //空白のタイルも消す
+                            FadeTile(2, undertiles[i])
+                        }
+                        Level8_hint(1)
+                    },1500)
+                }
+                else{
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                    Level8_hint(2)
+                }
+            }
+
+            5 -> {      //移動したタイルを固定するアニメーション
+                for(i in 0..3){
+                    uptiles_more[i].setTranslationX(260f)
+                    uptiles_more[i].setTranslationY(283f)
+                    uptiles_more[i].setVisibility(View.GONE)
+                }
+                for(i in 0..10){
+                    undertiles[i].setVisibility(View.GONE)
+                }
+            }
+
+            6 -> {
+                if(user_click_hintbutton == 1){
+                    if(number_total == 5 || number_total == 6){  //答えが５か６以外はここでヒントが終わり
+                        //こっちは何もしない
+                    }
+                    else {
+                        button11.setEnabled(false)
+                    }
+
+
+                    if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
+                        Tile_ColorChange1("after_movetile_Lev8")
+                        //右側のタイルが下側になる
+                        for(i in 0..(number_up - 10 - 1)){      //右側のタイルのアニメーション
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 550f)
+                            Move_Animetion(uptile_moveY)
+                        }
+                        if(5 <= (number_up - 10)){
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            Move_Animetion(uptile_moveY)
+                        }
+
+                        //10の塊だったタイルは上になる
+                        for(i in (6 - (10 - number_down))..5){
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((number_up - 10 + 1) * 27)).toFloat())
+                            Move_Animetion(uptile_moveY1)
+                            // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            Move_Animetion(uptile_moveX1)
+                        }
+
+
+                        Handler().postDelayed({
+                            Level8_hint(1)
+                        },1500)
+                    }
+                    else {
+                        Tile_ColorChange1("after_movetile_Lev8")
+                        //１０の塊だったタイルは下になる
+                        for(i in (6 - (10 - number_down))..5){
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((10 - number_down - 1) * 27)).toFloat())
+                            Move_Animetion(uptile_moveY1)
+                            // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            Move_Animetion(uptile_moveX1)
+                        }
+
+
+                        //右側のタイルは上になる
+                        for(i in 0..(number_up - 10 - 1)){
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - ((number_up - 10 + 1) * 27)).toFloat())
+                            Move_Animetion(uptile_moveY)
+                        }
+                        if(5 <= (number_up - 10)){
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            Move_Animetion(uptile_moveY)
+                        }
+                        Handler().postDelayed({
+                            Level8_hint(1)
+                        },1500)
+                    }
+                }
+                else {
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_ColorChange1("start_Minus")  //タイルの色変更
+                    Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                    if(number_total == 5 || number_total == 6) {}
+                    else button11.setEnabled(true)
+                    Level8_hint(2)
+                }
+
+            }
+
+            7 -> {
+                if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
+                    //右側のタイルが下側になる
+                    for(i in 0..(number_up - 10 - 1)){
+                        uptiles[i].setTranslationY(550f)
+                    }
+                    if(5 <= (number_up - 10)){
+                        uptiles[10].setTranslationY(550f)
+                    }
+                    //10の塊だったタイルは上になる
+                    for(i in (6 - (10 - number_down))..5){
+                        uptiles_more[i].setTranslationY((793 - ((number_up - 10 + 1) * 27)).toFloat())
+                        // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                    }
+                    uptiles_more[5].setTranslationX(260f)
+                }
+                else {
+                    //１０の塊だったタイルは下になる
+                    for(i in (6 - (10 - number_down))..5){
+                        uptiles_more[i].setTranslationY((793 - ((10 - number_down - 1) * 27)).toFloat())
+                        // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                    }
+                    uptiles_more[5].setTranslationX(260f)
+
+                    //右側のタイルは上になる
+                    for(i in 0..(number_up - 10 - 1)){
+                        uptiles[i].setTranslationY((550 - ((number_up - 10 + 1) * 27)).toFloat())
+                    }
+                    if(5 <= (number_up - 10)){
+                        uptiles[10].setTranslationY(550f)
+                    }
+                }
+            }
+
+            8 -> {
+                if(user_click_hintbutton == 1){
+                    button11.setEnabled(false)
+                    FadeTile(1, under_tile5_3)
+                    if(number_total == 5) FadeTile(2, uptiles_more[5])  //答えが５なら消す、６なら消さない
+                    if(number_total == 6) uptiles_more[5].setBackgroundResource(R.drawable.wakusen2)
+                    FadeTile(2, uptiles_more[4])
+                    for(i in 0..2){
+                        FadeTile(2, uptiles[i])
+                    }
+                    Level8_hint(1)
+                }
+                else {
+                    button11.setEnabled(true)
+                    under_tile5_3.setVisibility(View.GONE)
+                    if(number_total == 5) uptiles_more[5].setVisibility(View.VISIBLE)  //答えが５なら消す、６なら消さない
+                    if(number_total == 6) uptiles_more[5].setBackgroundResource(R.drawable.wakusen)
+                    uptiles_more[4].setVisibility(View.VISIBLE)
+                    for(i in 0..2) {
+                        uptiles[i].setVisibility(View.VISIBLE)
+                    }
+                    Level8_hint(2)
+                }
+            }
+
+            9 -> {
+                under_tile5_3.setVisibility(View.VISIBLE)
+                under_tile5_3.setTranslationY(267f)
+                if(number_total == 5) uptiles_more[5].setVisibility(View.GONE)  //答えが５なら消す、６なら消さない
+                uptiles_more[4].setVisibility(View.GONE)
+                for(i in 0..2) {
+                    uptiles[i].setVisibility(View.GONE)
+                }
+            }
+        }
+    }
+
+    private fun  Level9_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+        val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
+        val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
+        val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
+
+        Auto_HintLevel_plusminus(user_click_hintbutton)     //ヒントボタンが押されたらhint_button_hintlevelを増減させる
+
+        when(hint_button_hintlevel) {    //ヒントの段階に応じてヒントを与える
+            0 -> {      //ヒント表示なし
+                button12.setEnabled(false)      //戻るボタンを押せなくする
+                Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+            }
+
+            1 -> {      //横にタイルを表示
+                button12.setEnabled(true)       //戻るボタンを押せるようにする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                Tile_ColorChange1("start_Minus")  //タイルの色変更
+            }
+
+            2 -> {  //10のタイルを右に移動するアニメーション
+                if(user_click_hintbutton == 1){
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    Move_Animetion(uptile_moveX)
+                    Handler().postDelayed({
+                        FadeTile(2, ten_tile2)        //10のタイルを消す
+                        for(i in 0..5){
+                            FadeTile(1, uptiles_more[i])
+                        }
+                        Level9_hint(1)
+                    },1500)
+
+                }
+                else {
+                    Level9_hint(2)
+                }
+
+            }
+
+            3 -> {  //移動したタイルを固定
+                ten_tile2.setTranslationX(140f)
+                ten_tile2.setVisibility(View.GONE)
+                for(i in 0..5){
+                    uptiles_more[i].setVisibility(View.VISIBLE)
+                }
+            }
+
+            4 -> {  //１０の塊から7個のタイルを移動させるアニメーション
+                if(user_click_hintbutton == 1){
+                    for(i in 0..2){ //7のタイルを右下に移動
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        Move_Animetion(uptile_moveX)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 283f)
+                        Move_Animetion(uptile_moveY)
+                    }
+                    Handler().postDelayed({
+                        for(i in 0..2){ //８のタイルを消す
+                            FadeTile(2, uptiles_more[i])
+                        }
+                        for(i in 0..10){    //空白のタイルも消す
+                            FadeTile(2, undertiles[i])
+                        }
+                        Level9_hint(1)
+                    },1500)
+                }
+                else{
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                    Level9_hint(2)
+                }
+            }
+
+            5 -> {      //移動したタイルを固定するアニメーション
+                for(i in 0..2){
+                    uptiles_more[i].setTranslationX(260f)
+                    uptiles_more[i].setTranslationY(283f)
+                    uptiles_more[i].setVisibility(View.GONE)
+                }
+                for(i in 0..10){
+                    undertiles[i].setVisibility(View.GONE)
+                }
+            }
+
+            6 -> {
+                if(user_click_hintbutton == 1){
+                    if(number_total == 5 || number_total == 6 || number_total == 7){  //答えが５か６以外はここでヒントが終わり
+                        //こっちは何もしない
+                    }
+                    else {
+                        button11.setEnabled(false)
+                    }
+
+
+                    if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
+                        Tile_ColorChange1("after_movetile_Lev9")
+                        //右側のタイルが下側になる
+                        for(i in 0..(number_up - 10 - 1)){      //右側のタイルのアニメーション
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 550f)
+                            Move_Animetion(uptile_moveY)
+                        }
+                        if(5 <= (number_up - 10)){
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            Move_Animetion(uptile_moveY)
+                        }
+
+                        //10の塊だったタイルは上になる
+                        for(i in (6 - (10 - number_down))..5){
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((number_up - 10 + 2) * 27)).toFloat())
+                            Move_Animetion(uptile_moveY1)
+                            // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            Move_Animetion(uptile_moveX1)
+                        }
+
+
+                        Handler().postDelayed({
+                            Level9_hint(1)
+                        },1500)
+                    }
+                    else {
+                        Tile_ColorChange1("after_movetile_Lev9")
+                        //１０の塊だったタイルは下になる
+                        for(i in (6 - (10 - number_down))..5){
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((10 - number_down - 1) * 27)).toFloat())
+                            Move_Animetion(uptile_moveY1)
+                            // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            Move_Animetion(uptile_moveX1)
+                        }
+
+
+                        //右側のタイルは上になる
+                        for(i in 0..(number_up - 10 - 1)){
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - (3 * 27)).toFloat())
+                            Move_Animetion(uptile_moveY)
+                        }
+                        if(5 <= (number_up - 10)){
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            Move_Animetion(uptile_moveY)
+                        }
+                        Handler().postDelayed({
+                            Level9_hint(1)
+                        },1500)
+                    }
+                }
+                else {
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_ColorChange1("start_Minus")  //タイルの色変更
+                    Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                    if(number_total == 5 || number_total == 6 || number_total == 7) {}
+                    else button11.setEnabled(true)
+                    Level9_hint(2)
+                }
+
+            }
+
+            7 -> {
+                if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
+                    //右側のタイルが下側になる
+                    for(i in 0..(number_up - 10 - 1)){
+                        uptiles[i].setTranslationY(550f)
+                    }
+                    if(5 <= (number_up - 10)){
+                        uptiles[10].setTranslationY(550f)
+                    }
+                    //10の塊だったタイルは上になる
+                    for(i in (6 - (10 - number_down))..5){
+                        uptiles_more[i].setTranslationY((793 - ((number_up - 10 + 2) * 27)).toFloat())
+                        // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                    }
+                    uptiles_more[5].setTranslationX(260f)
+                }
+                else {
+                    //１０の塊だったタイルは下になる
+                    for(i in (6 - (10 - number_down))..5){
+                        uptiles_more[i].setTranslationY((793 - ((10 - number_down - 1) * 27)).toFloat())
+                        // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                    }
+                    uptiles_more[5].setTranslationX(260f)
+
+                    //右側のタイルは上になる
+                    for(i in 0..(number_up - 10 - 1)){
+                        uptiles[i].setTranslationY((550 - (3 * 27)).toFloat())
+                    }
+                    if(5 <= (number_up - 10)){
+                        uptiles[10].setTranslationY(550f)
+                    }
+                }
+            }
+
+            8 -> {
+                if(user_click_hintbutton == 1){
+                    button11.setEnabled(false)
+                    FadeTile(1, under_tile5_3)
+                    when(number_total) {
+                        5 -> {  //答えが５なら残ったタイルはすべて消す
+                            FadeTile(2, uptiles_more[5])
+                            FadeTile(2, uptiles_more[4])
+                            FadeTile(2, uptiles_more[3])
+                        }
+                        6 -> { //答えが6なら上の一つのタイル以外消す
+                            uptiles_more[5].setBackgroundResource(R.drawable.wakusen2)
+                            FadeTile(2, uptiles_more[4])
+                            FadeTile(2, uptiles_more[3])
+
+                        }
+                        7 -> {//答えが7なら下の一つのタイルを消す
+                            uptiles_more[5].setBackgroundResource(R.drawable.wakusen)
+                            uptiles_more[4].setBackgroundResource(R.drawable.wakusen2)
+                            FadeTile(2, uptiles_more[3])
+                        }
+                    }
+                    for(i in 0..1){
+                        FadeTile(2, uptiles[i])
+                    }
+                    Level9_hint(1)
+                }
+                else {
+                    button11.setEnabled(true)
+                    under_tile5_3.setVisibility(View.GONE)
+                    when(number_total) {
+                        5 -> {  //答えが５なら残ったタイルはすべて消す
+                            uptiles_more[5].setVisibility(View.VISIBLE)
+                            uptiles_more[4].setVisibility(View.VISIBLE)
+                            uptiles_more[3].setVisibility(View.VISIBLE)
+                        }
+                        6 -> { //答えが6なら上の一つのタイル以外消す
+                            uptiles_more[5].setBackgroundResource(R.drawable.wakusen)
+                            uptiles_more[4].setVisibility(View.VISIBLE)
+                            uptiles_more[3].setVisibility(View.VISIBLE)
+
+                        }
+                        7 -> {//答えが7なら下の一つのタイルを消す
+                            uptiles_more[5].setBackgroundResource(R.drawable.wakusen2)
+                            uptiles_more[4].setBackgroundResource(R.drawable.wakusen)
+                            uptiles_more[3].setVisibility(View.VISIBLE)
+                        }
+                    }
+                    for(i in 0..1) {
+                        uptiles[i].setVisibility(View.VISIBLE)
+                    }
+                    Level9_hint(2)
+                }
+            }
+
+            9 -> {
+                under_tile5_3.setVisibility(View.VISIBLE)
+                under_tile5_3.setTranslationY(267f)
+                when(number_total) {
+                    5 -> {  //答えが５なら残ったタイルはすべて消す
+                        uptiles_more[5].setVisibility(View.GONE)
+                        uptiles_more[4].setVisibility(View.GONE)
+                        uptiles_more[3].setVisibility(View.GONE)
+                    }
+                    6 -> { //答えが6なら上の一つのタイル以外消す
+                        uptiles_more[4].setVisibility(View.GONE)
+                        uptiles_more[3].setVisibility(View.GONE)
+                    }
+                    7 -> {//答えが7なら下の一つのタイルを消す
+                        uptiles_more[3].setVisibility(View.GONE)
+                    }
+                }
+                for(i in 0..1) {
                     uptiles[i].setVisibility(View.GONE)
                 }
             }
