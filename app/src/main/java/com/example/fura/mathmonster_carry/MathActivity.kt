@@ -457,6 +457,8 @@ class MathActivity : AppCompatActivity() {
             7 -> Level7_hint(user_click_hintbutton)
             8 -> Level8_hint(user_click_hintbutton)
             9 -> Level9_hint(user_click_hintbutton)
+            10 -> Level10_hint(user_click_hintbutton)
+            11 -> Level11_hint(user_click_hintbutton)
         }
     }
 
@@ -638,6 +640,61 @@ class MathActivity : AppCompatActivity() {
                         4 -> {
                             Tile_ColorChange2("up", 0, 0)
                         }
+                    }
+                }
+            }
+
+            "after_movetile_Lev10" -> {
+                when{
+                    (number_up == 15) && (number_down == 6) -> {
+                        for(i in 2..5){
+                            Tile_ColorChange2("minus_10", (i + 1) % 2, i)
+                        }
+                    }
+                    (number_down == 6) -> {
+                        for(i in 0..(number_up - 10)){
+                            Tile_ColorChange2("up", i % 2, i)
+                        }
+                    }
+                    (number_down == 5) -> {
+                        for(i in 0..(number_up - 10)){
+                            Tile_ColorChange2("up", i % 2, i)
+                        }
+                    }
+                }
+            }
+
+            "after_movetile_Lev10-2" -> {
+                when{
+                    (number_down == 6) -> {
+                        for(i in 1..(number_up - 10)){
+                            Tile_ColorChange2("up", i % 2, i)
+                        }
+                    }
+                    (number_down == 5) -> {
+                        for(i in 0..(number_up - 10)){
+                            Tile_ColorChange2("up", (i + 1) % 2, i)
+                        }
+                    }
+                }
+            }
+
+            "after_movetile_Lev11" -> {
+                when(number_down){
+                    1 -> {
+                        //何もなし
+                    }
+                    2 -> {
+                        Tile_ColorChange2("up", 0, 0)
+                    }
+                    3 -> {
+                        Tile_ColorChange2("up", 0, 1)
+                        Tile_ColorChange2("up", 1, 0)
+                    }
+                    4 -> {
+                        Tile_ColorChange2("up", 0, 2)
+                        Tile_ColorChange2("up", 1, 1)
+                        Tile_ColorChange2("up", 0, 0)
                     }
                 }
             }
@@ -3175,6 +3232,377 @@ class MathActivity : AppCompatActivity() {
                     uptiles[i].setVisibility(View.GONE)
                 }
             }
+        }
+    }
+
+    private fun  Level10_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+        val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
+        val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
+        val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
+
+        Auto_HintLevel_plusminus(user_click_hintbutton)     //ヒントボタンが押されたらhint_button_hintlevelを増減させる
+
+        when(hint_button_hintlevel) {    //ヒントの段階に応じてヒントを与える
+            0 -> {      //ヒント表示なし
+                button12.setEnabled(false)      //戻るボタンを押せなくする
+                Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+            }
+
+            1 -> {      //横にタイルを表示
+                button12.setEnabled(true)       //戻るボタンを押せるようにする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                Tile_ColorChange1("start_Minus")  //タイルの色変更
+            }
+
+            2 -> {  //10のタイルを右に移動するアニメーション
+                if(user_click_hintbutton == 1){
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    Move_Animetion(uptile_moveX)
+                    Handler().postDelayed({
+                        FadeTile(2, ten_tile2)        //10のタイルを消す
+                        for(i in 0..5){
+                            FadeTile(1, uptiles_more[i])
+                        }
+                        Level10_hint(1)
+                    },1500)
+
+                }
+                else {
+                    Level10_hint(2)
+                }
+
+            }
+
+            3 -> {  //移動したタイルを固定
+                ten_tile2.setTranslationX(140f)
+                ten_tile2.setVisibility(View.GONE)
+                for(i in 0..5){
+                    uptiles_more[i].setVisibility(View.VISIBLE)
+                }
+            }
+
+            4 -> {  //１０の塊から5or6個のタイルを移動させるアニメーション
+                if(user_click_hintbutton == 1){
+                    for(i in 0..(number_down - 5)){ //7のタイルを右下に移動
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        Move_Animetion(uptile_moveX)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 283f)
+                        Move_Animetion(uptile_moveY)
+                    }
+                    Handler().postDelayed({
+                        for(i in 0..(number_down - 5)){ //８のタイルを消す
+                            FadeTile(2, uptiles_more[i])
+                        }
+                        for(i in 0..(number_down - 1)){    //空白のタイルも消す
+                            FadeTile(2, undertiles[i])
+                        }
+                        FadeTile(2, undertiles[10])
+                        Level10_hint(1)
+                    },1500)
+                }
+                else{
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                    Level10_hint(2)
+                }
+            }
+
+            5 -> {      //移動したタイルを固定するアニメーション
+                for(i in 0..(number_down - 5)){
+                    uptiles_more[i].setTranslationX(260f)
+                    uptiles_more[i].setTranslationY(283f)
+                    uptiles_more[i].setVisibility(View.GONE)
+                }
+                for(i in 0..(number_down - 1)){
+                    undertiles[i].setVisibility(View.GONE)
+                }
+                undertiles[10].setVisibility(View.GONE)
+            }
+
+            6 -> {
+                if(user_click_hintbutton == 1){
+                    when{
+                        (number_up == 10) && (number_down == 6) -> button11.setEnabled(false)
+                        (number_up == 15) && (number_down == 6) -> button11.setEnabled(false)
+                        else -> button11.setEnabled(true)
+                    }
+
+                    if(number_up == 15 && number_down == 6){
+                        Tile_ColorChange1("after_movetile_Lev10")
+                        //右側のタイルが下側になる
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                        Move_Animetion(uptile_moveY)
+
+                        //10の塊だったタイルは上になる
+                        for(i in 2..5){
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - (8 * 27)).toFloat())
+                            Move_Animetion(uptile_moveY1)
+                            // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            Move_Animetion(uptile_moveX1)
+                        }
+
+                        Handler().postDelayed({
+                            Level10_hint(1)
+                        },1500)
+                    }
+                    else {
+                        Tile_ColorChange1("after_movetile_Lev10")
+                        //１０の塊だったタイルは下になる
+                        for(i in (6 - (10 - number_down))..5){
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((10 - number_down - 1) * 27)).toFloat())
+                            Move_Animetion(uptile_moveY1)
+                            // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            Move_Animetion(uptile_moveX1)
+                        }
+                        //右側のタイルは上になる
+                        for(i in 0..(number_up - 10 - 1)){
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - ((10 - number_down) * 27)).toFloat())
+                            Move_Animetion(uptile_moveY)
+                        }
+                        Handler().postDelayed({
+                            Level10_hint(1)
+                        },1500)
+                    }
+
+                }
+                else {
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_ColorChange1("start_Minus")  //タイルの色変更
+                    Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                    button11.setEnabled(true)
+                    Level10_hint(2)
+                }
+
+            }
+
+            7 -> {
+                if(number_up == 15 && number_down == 6){
+                    uptiles[10].setTranslationY(550f)
+
+                    //10の塊だったタイルは上になる
+                    for(i in 2..5){
+                        uptiles_more[i].setTranslationY((793 - (8 * 27)).toFloat())
+                        // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                        uptiles_more[i].setTranslationX(260f)
+                    }
+
+                }
+                else {
+                    for(i in (6 - (10 - number_down))..5){
+                        uptiles_more[i].setTranslationY(793 - ((10 - number_down - 1) * 27).toFloat())
+                        uptiles_more[i].setTranslationX(260f)
+                    }
+                    for(i in 0..(number_up - 10 - 1)){
+                        uptiles[i].setTranslationY(550 - ((10 - number_down) * 27).toFloat())
+                    }
+
+                }
+            }
+
+            8 -> {
+                if(user_click_hintbutton == 1){
+                    button11.setEnabled(false)
+                    FadeTile(1, under_tile5_3)
+                    Tile_ColorChange1("after_movetile_Lev10-2")
+                    when(number_down) {
+                        6 -> {
+                            for(i in 2..5){
+                                FadeTile(2, uptiles_more[i])    //左のタイルを４つ消す
+                            }
+                            FadeTile(2, uptiles[0])    //右のタイルを１つ消す
+                        }
+                        5 -> {
+                            for(i in 1..5){
+                                FadeTile(2, uptiles_more[i])    //左のタイルを5つ消す
+                            }
+                        }
+                    }
+                    Level10_hint(1)
+                }
+                else {
+                    button11.setEnabled(true)
+                    under_tile5_3.setVisibility(View.GONE)
+                    Tile_ColorChange1("start_Minus")  //タイルの色変更
+                    Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                    Tile_ColorChange1("after_movetile_Lev10")
+                    when(number_down) {
+                        6 -> {
+                            for(i in 2..5){
+                                uptiles_more[i].setVisibility(View.VISIBLE)
+                            }
+                            uptiles[0].setVisibility(View.VISIBLE)
+                        }
+                        5 -> {
+                            for(i in 1..5){
+                                uptiles_more[i].setVisibility(View.VISIBLE)
+                            }
+                        }
+                    }
+                    Level10_hint(2)
+                }
+            }
+
+            9 -> {
+                under_tile5_3.setVisibility(View.VISIBLE)
+                under_tile5_3.setTranslationY(267f)
+                when(number_down) {
+                    6 -> {
+                        for(i in 2..5){
+                            uptiles_more[i].setVisibility(View.GONE)
+                        }
+                        uptiles[0].setVisibility(View.GONE)
+                    }
+                    5 -> {
+                        for(i in 1..5){
+                            uptiles_more[i].setVisibility(View.GONE)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun  Level11_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+        val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
+        val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
+        val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
+
+        Auto_HintLevel_plusminus(user_click_hintbutton)     //ヒントボタンが押されたらhint_button_hintlevelを増減させる
+
+        when(hint_button_hintlevel) {    //ヒントの段階に応じてヒントを与える
+            0 -> {      //ヒント表示なし
+                button12.setEnabled(false)      //戻るボタンを押せなくする
+                Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+            }
+
+            1 -> {      //横にタイルを表示
+                button12.setEnabled(true)       //戻るボタンを押せるようにする
+                Tile_Position("delete", "all")   //全てのタイルを画面から消す
+                Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
+                Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                Tile_ColorChange1("start_Minus")  //タイルの色変更
+            }
+
+            2 -> {  //10のタイルを右に移動するアニメーション
+                if(user_click_hintbutton == 1){
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    Move_Animetion(uptile_moveX)
+                    Handler().postDelayed({
+                        FadeTile(2, ten_tile2)        //10のタイルを消す
+                        for(i in 0..5){
+                            FadeTile(1, uptiles_more[i])
+                        }
+                        Level11_hint(1)
+                    },1500)
+
+                }
+                else {
+                    Level11_hint(2)
+                }
+
+            }
+
+            3 -> {  //移動したタイルを固定
+                ten_tile2.setTranslationX(140f)
+                ten_tile2.setVisibility(View.GONE)
+                for(i in 0..5){
+                    uptiles_more[i].setVisibility(View.VISIBLE)
+                }
+            }
+
+            4 -> {  //１０の塊から5or6個のタイルを移動させるアニメーション
+                if(user_click_hintbutton == 1){
+                    var roop_time = 0
+                    while(roop_time < number_down){
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[5 - roop_time], "translationX", 260f)
+                        Move_Animetion(uptile_moveX)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[5 - roop_time], "translationY", (553 - (number_down * 27)).toFloat())
+                        Move_Animetion(uptile_moveY)
+                        //553→左の上から右の下のタイルに移動する量
+                        roop_time++
+                    }
+                    Handler().postDelayed({
+                        roop_time = 0
+                        while(roop_time < number_down){
+                            FadeTile(2, uptiles_more[5 - roop_time])
+                            roop_time++
+                        }
+                        for(i in 0..(number_down - 1)){    //空白のタイルも消す
+                            FadeTile(2, undertiles[i])
+                        }
+                        Level11_hint(1)
+                    },1500)
+                }
+                else{
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
+                    Level11_hint(2)
+                }
+            }
+
+            5 -> {      //移動したタイルを固定するアニメーション
+                var roop_time = 0
+                while(roop_time < number_down){
+                    uptiles_more[5 - roop_time].setTranslationX(260f)
+                    uptiles_more[5 - roop_time].setTranslationY((553 - (number_down * 27)).toFloat())
+                    uptiles_more[5 - roop_time].setVisibility(View.GONE)
+                    roop_time++
+                }
+                for(i in 0..(number_down - 1)){
+                    undertiles[i].setVisibility(View.GONE)
+                }
+            }
+
+            6 -> {
+                if(user_click_hintbutton == 1){
+                    button11.setEnabled(false)
+                    Tile_ColorChange1("after_movetile_Lev11")
+
+                    for(i in 0..(10 - number_down - 5)){
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 550f)
+                        Move_Animetion(uptile_moveY1)
+                        // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
+                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        Move_Animetion(uptile_moveX1)
+                    }
+
+                    //右側のタイルは上になる
+                    for(i in 0..(number_up - 10 - 1)){
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - ((10 - number_down) * 27)).toFloat())
+                        Move_Animetion(uptile_moveY)
+                    }
+                    Handler().postDelayed({
+                        Level11_hint(1)
+                    },1500)
+
+                }
+                else {
+                    Tile_Position("reset", "all")   //全てのタイルを画面から消す
+                    Tile_ColorChange1("start_Minus")  //タイルの色変更
+                    Tile_ColorChange1("reset_Minus")  //タイルの色変更
+                    button11.setEnabled(true)
+                    Level11_hint(2)
+                }
+
+            }
+
+            7 -> {
+                for(i in 0..(10 - number_down - 5)){
+                    uptiles_more[i].setTranslationY(550f)
+                    uptiles_more[i].setTranslationX(260f)
+                }
+                //右側のタイルは上になる
+                for(i in 0..(number_up - 10 - 1)){
+                    uptiles[i].setTranslationY(550 - ((10 - number_down) * 27).toFloat())
+                }
+            }
+
         }
     }
 
