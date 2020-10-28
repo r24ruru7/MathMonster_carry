@@ -1,6 +1,10 @@
 package com.example.fura.mathmonster_carry
 
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.SoundPool
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +18,9 @@ class BreakActivity : AppCompatActivity() {
     var fadeAnimation = 0   //「がめんにふれてね」 がフェードインしたか確認フラグ(モンスターのアニメーションが始まったら1になる)
     val Picc = arrayOf(R.drawable.monster1, R.drawable.monster2, R.drawable.monster3, R.drawable.monster4, R.drawable.monster5, R.drawable.circle1,
         R.drawable.monster6, R.drawable.monster7, R.drawable.monster8, R.drawable.monster9, R.drawable.monster10, R.drawable.circle1)                   //モンスター画像の配列、ミックス(titletext_from_Level = 6, 12)には適当な画像を入れてる
+
+    private lateinit var soundPool: SoundPool       //音声流すためのやつ
+    private var MonsterSound = 0    //音声ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +39,44 @@ class BreakActivity : AppCompatActivity() {
         val intent_to_Result = Intent(this, ResultActivity::class.java)                      //ResultActivityに(まちがい数、クリア時間)
 
 
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {        //アンドロイドのバージョンがlolipop以前か
+            soundPool = SoundPool(2, AudioManager.STREAM_MUSIC, 0)
+        } else {
+            val attr = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build()
+            soundPool = SoundPool.Builder()
+                .setAudioAttributes(attr)
+                //パラメーターはリソースの数に合わせる
+                .setMaxStreams(2)
+                .build()
+        }
+
+        MonsterSound = soundPool.load(this, R.raw.break_monster, 1)
+
+        //音楽のロードを確認するまでループ
+        var streamID = 0
+        do {
+            //少し待ち時間を入れる
+            try {
+                Thread.sleep(10)
+            } catch (e: InterruptedException) {
+            }
+
+            //ボリュームをゼロにして再生して戻り値をチェック
+            streamID = soundPool.play(MonsterSound, 0.0f, 0.0f, 1, 0, 1.0f)
+        } while (streamID == 0)
+        //確認
+
+
+
         /******本文******/
         breakimage.setImageResource(Picc[ LevelMix_Judgment(titletext_from_Math, nowlevel_from_Math) ])                                             //モンスター画像を変更
-
+        soundPool.play(MonsterSound, 1.0f, 1.0f, 0, 0, 1.0f)
         TextAnimetion()                                                                             //テキストのアニメーションを実行
         MonsterAnimetion()                                                                          //モンスター画像のアニメーションを実行
         fadein()                                                                                    //がめんにふれてねアニメーションを実行
-
-
-        textView4.text = timerpast_from_Math.toString()
 
         //画面タッチ後、次の画面に遷移する
         ground0.setOnClickListener{
@@ -171,5 +207,10 @@ class BreakActivity : AppCompatActivity() {
             }, 4000)
         },500)
 
+    }
+
+    override fun onPause() {
+        soundPool.release ()
+        super.onPause()
     }
 }

@@ -28,11 +28,6 @@ class LevelActivity : AppCompatActivity() {
         var title_text = 0          //複数のintentを一つにまとめる
         title_text = Intent_Judgment(calculation_from_Main, calculation_from_Math, calculation_from_Break, calculation_from_Result)
 
-        //テスト用
-        textView.text = calculation_from_Main.toString() + " + " + calculation_from_Math.toString() + " + " + calculation_from_Break.toString() + " + " + calculation_from_Result.toString() + " + " + title_text.toString()
-
-
-
         /******本文******/
         var select_calculation = 0                                                           //足し算(=0),引き算(=6)で判断
         var select_total = 0                                                                 //level + calculation　で足し引きとレベルを判断

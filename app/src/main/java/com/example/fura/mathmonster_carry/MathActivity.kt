@@ -52,7 +52,7 @@ class MathActivity : AppCompatActivity() {
     private var soundHintFadeout = 0
     private var soundHintBack = 0
 
-
+    var teat_btn_flag = false
 
     val Titles = arrayOf(
         "レベル1", "レベル2", "レベル3", "レベル4", "レベル5", "レベル6",
@@ -445,13 +445,18 @@ class MathActivity : AppCompatActivity() {
         }
 
         lev_Btn.setOnClickListener {
-            intent_to_Break.putExtra("LevelCalc_Math_Break", titletext_from_Monster)
-            intent_to_Break.putExtra("NowLevel_Math_Break", nowlevel_from_Monster)
-            intent_to_Break.putExtra(
-                "ClearTime_Math_Break",
-                Time_fun(timer_start, timerpast_from_Monster)
-            )
-            startActivity(intent_to_Break)
+            if(teat_btn_flag == true){
+                intent_to_Break.putExtra("LevelCalc_Math_Break", titletext_from_Monster)
+                intent_to_Break.putExtra("NowLevel_Math_Break", nowlevel_from_Monster)
+                intent_to_Break.putExtra(
+                    "ClearTime_Math_Break",
+                    Time_fun(timer_start, timerpast_from_Monster)
+                )
+                startActivity(intent_to_Break)
+            }
+            else{
+                teat_btn_flag = true
+            }
         }
 
         backBTN.setOnClickListener {
@@ -477,8 +482,8 @@ class MathActivity : AppCompatActivity() {
         }
 
         button12.setOnClickListener {
-            Auto_LevelHint(2)
             Sound(7)
+            Auto_LevelHint(2)
         }
     }
 
@@ -520,7 +525,6 @@ class MathActivity : AppCompatActivity() {
 
     //ヒントボタンが押せるかどうかの関数
     fun Put_Button_11_13_Flag(){
-        count_time2.text = number_question.toString()
         when(number_question){
             1, 7, 8, 9, 10, 11, 12 -> {     //この数字のレベルは5と5で10のボタンを使う
                 button11.setEnabled(true)
@@ -1501,6 +1505,7 @@ class MathActivity : AppCompatActivity() {
                         button11.setEnabled(false)  //あと〇で10を押したら5と5で10は押せなくなる
                     }
                 }
+                if(user_click_hintbutton == 1)Sound(3)
                 button12.setEnabled(true)       //戻るボタンを押せるようにする
                 Tile_Position("delete", "all")   //全てのタイルを画面から消す
                 Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
@@ -1512,6 +1517,7 @@ class MathActivity : AppCompatActivity() {
                 when(hint_button_select_flag){
                     5 -> {
                         if(user_click_hintbutton == 1){
+                            Sound(4)
                             var uptile52_moveX = ObjectAnimator.ofFloat(uptiles[5], "translationX", -390f)  //uptileのY軸を指定された分だけ下げる
                             Move_Animetion(uptile52_moveX)
                             var uptile52_moveY = ObjectAnimator.ofFloat(uptiles[5], "translationY", 148f)  //uptileのY軸を指定された分だけ下げる
@@ -1519,6 +1525,7 @@ class MathActivity : AppCompatActivity() {
                             var undertile52_moveX = ObjectAnimator.ofFloat(undertiles[5], "translationX", -390f)  //undertileのY軸を指定された分だけ下げる
                             Move_Animetion(undertile52_moveX)
                              Handler().postDelayed({         //5と5のタイルが10に変化するアニメーション
+                                 Sound(5)
                                  FadeTile(2, uptiles[5])
                                  FadeTile(2, undertiles[5])
                                  FadeTile(1, ten_tile1)
@@ -1531,6 +1538,7 @@ class MathActivity : AppCompatActivity() {
                     }
                     10 -> {     //空白のタイルを入れる
                         if(user_click_hintbutton == 1){
+                            Sound(3)
                             Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
                             if(number_up < number_down){    //下が8or9の時
                                 undertiles[10].setVisibility(View.VISIBLE)
@@ -1588,7 +1596,10 @@ class MathActivity : AppCompatActivity() {
                     10 -> { //合計が15以下の時5のタイルを分解する、15以上の答えはこの動作飛ばす
                         if(number_total < 15){      //どちらかの５のタイルを分解する
                             if(number_up < number_down){    //下が大きいとき
-                                if(user_click_hintbutton == 1) FadeTile(2, uptiles[5])
+                                if(user_click_hintbutton == 1) {
+                                    Sound(5)
+                                    FadeTile(2, uptiles[5])
+                                }
                                 else Tile_Position("reset", "all")   //全てのタイルを初期値に戻す
                                 uptiles[5].setVisibility(View.GONE)
                                 for(i in 0..4){
@@ -1596,7 +1607,10 @@ class MathActivity : AppCompatActivity() {
                                 }
                             }
                             else {
-                                if(user_click_hintbutton == 1) FadeTile(2, undertiles[5])
+                                if(user_click_hintbutton == 1) {
+                                    Sound(5)
+                                    FadeTile(2, undertiles[5])
+                                }
                                 else Tile_Position("reset", "all")   //全てのタイルを初期値に戻す
                                 undertiles[5].setVisibility(View.GONE)
                                 for(i in 0..4){
@@ -1618,6 +1632,7 @@ class MathActivity : AppCompatActivity() {
                 when(hint_button_select_flag){
                     5 -> {
                         if(user_click_hintbutton == 1){
+                            Sound(4)
                             Tile_ColorChange1("after_movetile_Lev1")     //移動後のタイルの色を交互にさせる
                             for(i in 6..number_up){     //上側のタイルを下のタイルに合体させるアニメーション
                                 var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (418 - 27 * (number_down - 5)).toFloat())  //uptileのY軸を指定された分だけ下げる
@@ -1639,6 +1654,7 @@ class MathActivity : AppCompatActivity() {
                     }
                     10 -> { //上に少しずらすアニメーション
                         if(user_click_hintbutton == 1){
+                            Sound(4)
                             if(number_up < number_down){    //下が8or9の時
                                 if(number_total < 15){  //合計が１５未満の時
                                     when(number_up){    //上の数字が５or6
@@ -1773,6 +1789,7 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     when(hint_button_select_flag){
                         5 -> {
+                            Sound(5)
                             for(i in 1..(number_down - 5) ){
                                 FadeTile(2, undertiles[5+i])    //下側タイルの５の塊になるやつを消す
                             }
@@ -1790,6 +1807,8 @@ class MathActivity : AppCompatActivity() {
 
                         }
                         10 -> {     //10の塊にするアニメーション１
+                            Sound(4)
+                            if(number_down < number_up) button13.setEnabled(false)
                             if(number_up < number_down){    //下が8の時
                                 if(number_total < 15){
                                     when(number_up){
@@ -1892,6 +1911,7 @@ class MathActivity : AppCompatActivity() {
                                                 else undertiles[10].setVisibility(View.GONE)
                                             }
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
+                                                Sound(4)
                                                 for(i in (5 - (10 - number_down))..4){
                                                     var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)    //10の位に移動
                                                     Move_Animetion(uptile_moveX1)
@@ -1901,6 +1921,7 @@ class MathActivity : AppCompatActivity() {
                                                     Move_Animetion(undertile_moveX)
                                                 }
                                                 Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
+                                                    Sound(5)
                                                     for(i in (5 - (10 - number_down))..4){
                                                         FadeTile(2, uptiles[i])     //一つだけ動かしたタイルを消す
                                                     }
@@ -1920,6 +1941,7 @@ class MathActivity : AppCompatActivity() {
                                             undertiles[9].setVisibility(View.GONE)     //空白のタイルを消す
 
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
+                                                Sound(4)
                                                 var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[4], "translationX", -390f)    //10の位に移動
                                                 Move_Animetion(uptile_moveX1)
                                                 var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[6], "translationX", -390f)    //10の位に移動
@@ -1930,6 +1952,7 @@ class MathActivity : AppCompatActivity() {
                                                     Move_Animetion(undertile_moveX)
                                                 }
                                                 Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
+                                                    Sound(5)
                                                     FadeTile(2, uptiles[4])     //一つだけ動かしたタイルを消す
                                                     FadeTile(2, uptiles[6])     //一つだけ動かしたタイルを消す
                                                     for(i in 5..number_down){
@@ -1952,6 +1975,7 @@ class MathActivity : AppCompatActivity() {
                                     }
 
                                     Handler().postDelayed({     //タイル合体後、10の位に移動する
+                                        Sound(4)
                                         var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up], "translationX", -390f)    //10の位に移動
                                         Move_Animetion(uptile_moveX1)
                                         if(number_down == 8){
@@ -1963,6 +1987,7 @@ class MathActivity : AppCompatActivity() {
                                             Move_Animetion(undertile_moveX)
                                         }
                                         Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
+                                            Sound(5)
                                             FadeTile(2, uptiles[number_up])     //一つだけ動かしたタイルを消す
                                             if(number_down == 8) FadeTile(2, uptiles[number_up - 1])     //一つだけ動かしたタイルを消す
                                             for(i in 5..number_down){
@@ -1986,6 +2011,7 @@ class MathActivity : AppCompatActivity() {
                                             }
 
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
+                                                Sound(4)
                                                 for(i in (5 - (10 - number_up))..4){
                                                     var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動する
                                                     Move_Animetion(undertile_moveX1)
@@ -2002,6 +2028,7 @@ class MathActivity : AppCompatActivity() {
                                                 }
 
                                                 Handler().postDelayed({     //10の位に移動後、10のタイルに変化
+                                                    Sound(5)
                                                     for(i in (5 - (10 - number_up))..4){
                                                         FadeTile(2, undertiles[i])        //一つだけ動かしたタイルを消す
                                                     }
@@ -2021,6 +2048,7 @@ class MathActivity : AppCompatActivity() {
                                             uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
 
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
+                                                Sound(4)
                                                 var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[4], "translationX", -390f)    //10の位に移動する
                                                 Move_Animetion(undertile_moveX1)
                                                 var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[4], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
@@ -2039,6 +2067,7 @@ class MathActivity : AppCompatActivity() {
                                                 }
 
                                                 Handler().postDelayed({     //10の位に移動後、10のタイルに変化
+                                                    Sound(5)
                                                     FadeTile(2, undertiles[4])        //一つだけ動かしたタイルを消す
                                                     FadeTile(2, undertiles[6])        //一つだけ動かしたタイルを消す
                                                     for(i in 5..number_up){
@@ -2061,6 +2090,7 @@ class MathActivity : AppCompatActivity() {
                                     }
 
                                     Handler().postDelayed({     //タイル合体後、10の位に移動する
+                                        Sound(4)
                                         var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationX", -390f)    //10の位に移動する
                                         Move_Animetion(undertile_moveX1)
                                         var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
@@ -2081,6 +2111,7 @@ class MathActivity : AppCompatActivity() {
                                         }
 
                                         Handler().postDelayed({     //10の位に移動後、10のタイルに変化
+                                            Sound(5)
                                             FadeTile(2, undertiles[number_down])        //一つだけ動かしたタイルを消す
                                             if(number_up == 8) FadeTile(2, undertiles[number_down - 1])        //一つだけ動かしたタイルを消す
                                             for(i in 5..number_up){
@@ -2095,6 +2126,7 @@ class MathActivity : AppCompatActivity() {
                             }
                         }
                         else {
+                            if(number_down < number_up) button13.setEnabled(true)
                             Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
                             Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
                             ten_tile1.setVisibility(View.GONE)  //戻ってきたとき10のタイルを表示
@@ -2201,6 +2233,7 @@ class MathActivity : AppCompatActivity() {
 
             9 -> {      //下が8の時のみ、上に残っているタイルを下に持ってくる
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     if(number_up < number_down){
                         for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
                             var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
@@ -2248,6 +2281,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             1 -> {      //横にタイルを表示
+                if(user_click_hintbutton == 1) Sound(3)
                 button12.setEnabled(true)       //戻るボタンを押せるようにする
                 Tile_Position("delete", "all")   //全てのタイルを画面から消す
                 Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
@@ -2257,6 +2291,7 @@ class MathActivity : AppCompatActivity() {
 
             2 -> {      //7のタイルに空白のタイルを1つ追加
                 if(user_click_hintbutton == 1){
+                    Sound(3)
                     Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
                     if(number_up < number_down){    //下が7の時
                         undertiles[8].setVisibility(View.VISIBLE)
@@ -2290,6 +2325,7 @@ class MathActivity : AppCompatActivity() {
 
             3 -> {      //小さい数字のほうのタイル1つを上にずらすアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     if(number_up < number_down){    //下が7の時
                         var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", -27f)  //上のタイルの一番上にあるタイルを少しずらす
                         var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", -27f)  //上のタイルの二番目に上にあるタイルを少しずらす
@@ -2363,6 +2399,8 @@ class MathActivity : AppCompatActivity() {
 
             5 -> {      //タイルを合体させて10のタイルにするアニメーション1
                 if(user_click_hintbutton == 1){
+                    Sound(4)
+                    if(number_down < number_up) button13.setEnabled(false)
                     if(number_up < number_down){    //下が7の時
                         var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                         var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
@@ -2428,6 +2466,7 @@ class MathActivity : AppCompatActivity() {
                         }
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
+                            Sound(4)
                             var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", -390f)    //10の位に移動
                             var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationX", -390f)    //10の位に移動
                             var uptile_moveX3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationX", -390f)    //10の位に移動
@@ -2443,6 +2482,7 @@ class MathActivity : AppCompatActivity() {
                                 Move_Animetion(undertile_moveX)
                             }
                             Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
+                                Sound(5)
                                 FadeTile(2, uptiles[number_up - 1])     //一つだけ動かしたタイルを消す
                                 FadeTile(2, uptiles[number_up - 2])     //一つだけ動かしたタイルを消す
                                 FadeTile(2, uptiles[number_up - 3])     //一つだけ動かしたタイルを消す
@@ -2470,6 +2510,7 @@ class MathActivity : AppCompatActivity() {
                         }
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
+                            Sound(4)
                             var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", -390f)    //10の位に移動する
                             var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationX", -390f)    //10の位に移動する
                             var undertile_moveX3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationX", -390f)    //10の位に移動する
@@ -2498,6 +2539,7 @@ class MathActivity : AppCompatActivity() {
                             }
 
                             Handler().postDelayed({     //10の位に移動後、10のタイルに変化
+                                Sound(5)
                                 FadeTile(2, undertiles[number_down - 1])        //一つだけ動かしたタイルを消す
                                 FadeTile(2, undertiles[number_down - 2])        //一つだけ動かしたタイルを消す
                                 FadeTile(2, undertiles[number_down - 3])        //一つだけ動かしたタイルを消す
@@ -2514,6 +2556,7 @@ class MathActivity : AppCompatActivity() {
                     }
                 }
                 else {
+                    if(number_down < number_up) button13.setEnabled(true)
                     Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
                     Tile_Position("visible", "undertile")    //下側の数字分タイルを表示
                     ten_tile1.setVisibility(View.GONE)  //戻ってきたとき10のタイルを表示
@@ -2565,6 +2608,7 @@ class MathActivity : AppCompatActivity() {
 
             8 -> {      //下が8の時のみ、上に残っているタイルを下に持ってくる
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     if(number_up < number_down){
                         for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
                             var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
@@ -2610,6 +2654,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             1 -> {      //横にタイルを表示
+                if(user_click_hintbutton == 1) Sound(3)
                 button12.setEnabled(true)       //戻るボタンを押せるようにする
                 Tile_Position("delete", "all")   //全てのタイルを画面から消す
                 Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
@@ -2619,9 +2664,11 @@ class MathActivity : AppCompatActivity() {
 
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
+                        Sound(5)
                         FadeTile(2, ten_tile2)        //10のタイルを消す
                         for(i in 0..5){
                             FadeTile(1, uptiles_more[i])
@@ -2646,6 +2693,7 @@ class MathActivity : AppCompatActivity() {
 
             4 -> {  //１０の塊から９個のタイルを移動させるアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     for(i in 0..4){
                         var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
                         Move_Animetion(uptile_moveX)
@@ -2653,6 +2701,7 @@ class MathActivity : AppCompatActivity() {
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
+                        Sound(6)
                         for(i in 0..4){
                             FadeTile(2, uptiles_more[i])
                         }
@@ -2685,6 +2734,7 @@ class MathActivity : AppCompatActivity() {
                     if(number_total != 5){  //答えが５以外はここでヒントが終わり
                         button11.setEnabled(false)
                     }
+                    Sound(4)
                     if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
                         Tile_ColorChange1("after_movetile_Lev7")
                         //右側のタイルが下側になる
@@ -2780,10 +2830,11 @@ class MathActivity : AppCompatActivity() {
 
             8 -> {
                 if(user_click_hintbutton == 1){
+                    Sound(5)
                     button11.setEnabled(false)
                     FadeTile(1, under_tile5_3)
                     FadeTile(2, uptiles_more[5])
-                    for(i in 0..10){
+                    for(i in 0..3){
                         FadeTile(2, uptiles[i])
                     }
                     Level7_hint(1)
@@ -2825,6 +2876,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             1 -> {      //横にタイルを表示
+                if(user_click_hintbutton == 1) Sound(3)
                 button12.setEnabled(true)       //戻るボタンを押せるようにする
                 Tile_Position("delete", "all")   //全てのタイルを画面から消す
                 Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
@@ -2834,9 +2886,11 @@ class MathActivity : AppCompatActivity() {
 
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
+                        Sound(5)
                         FadeTile(2, ten_tile2)        //10のタイルを消す
                         for(i in 0..5){
                             FadeTile(1, uptiles_more[i])
@@ -2861,6 +2915,7 @@ class MathActivity : AppCompatActivity() {
 
             4 -> {  //１０の塊から8個のタイルを移動させるアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     for(i in 0..3){ //８のタイルを右下に移動
                         var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
                         Move_Animetion(uptile_moveX)
@@ -2868,6 +2923,7 @@ class MathActivity : AppCompatActivity() {
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
+                        Sound(6)
                         for(i in 0..3){ //８のタイルを消す
                             FadeTile(2, uptiles_more[i])
                         }
@@ -2904,7 +2960,7 @@ class MathActivity : AppCompatActivity() {
                         button11.setEnabled(false)
                     }
 
-
+                    Sound(4)
                     if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
                         Tile_ColorChange1("after_movetile_Lev8")
                         //右側のタイルが下側になる
@@ -3005,6 +3061,7 @@ class MathActivity : AppCompatActivity() {
             8 -> {
                 if(user_click_hintbutton == 1){
                     button11.setEnabled(false)
+                    Sound(5)
                     FadeTile(1, under_tile5_3)
                     if(number_total == 5) FadeTile(2, uptiles_more[5])  //答えが５なら消す、６なら消さない
                     if(number_total == 6) uptiles_more[5].setBackgroundResource(R.drawable.wakusen2)
@@ -3054,6 +3111,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             1 -> {      //横にタイルを表示
+                if(user_click_hintbutton == 1) Sound(3)
                 button12.setEnabled(true)       //戻るボタンを押せるようにする
                 Tile_Position("delete", "all")   //全てのタイルを画面から消す
                 Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
@@ -3063,9 +3121,11 @@ class MathActivity : AppCompatActivity() {
 
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
+                        Sound(5)
                         FadeTile(2, ten_tile2)        //10のタイルを消す
                         for(i in 0..5){
                             FadeTile(1, uptiles_more[i])
@@ -3090,6 +3150,7 @@ class MathActivity : AppCompatActivity() {
 
             4 -> {  //１０の塊から7個のタイルを移動させるアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     for(i in 0..2){ //7のタイルを右下に移動
                         var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
                         Move_Animetion(uptile_moveX)
@@ -3097,6 +3158,7 @@ class MathActivity : AppCompatActivity() {
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
+                        Sound(6)
                         for(i in 0..2){ //８のタイルを消す
                             FadeTile(2, uptiles_more[i])
                         }
@@ -3133,7 +3195,7 @@ class MathActivity : AppCompatActivity() {
                         button11.setEnabled(false)
                     }
 
-
+                    Sound(4)
                     if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
                         Tile_ColorChange1("after_movetile_Lev9")
                         //右側のタイルが下側になる
@@ -3233,6 +3295,7 @@ class MathActivity : AppCompatActivity() {
 
             8 -> {
                 if(user_click_hintbutton == 1){
+                    Sound(5)
                     button11.setEnabled(false)
                     FadeTile(1, under_tile5_3)
                     when(number_total) {
@@ -3325,6 +3388,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             1 -> {      //横にタイルを表示
+                if(user_click_hintbutton == 1) Sound(3)
                 button12.setEnabled(true)       //戻るボタンを押せるようにする
                 Tile_Position("delete", "all")   //全てのタイルを画面から消す
                 Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
@@ -3334,9 +3398,11 @@ class MathActivity : AppCompatActivity() {
 
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
+                        Sound(5)
                         FadeTile(2, ten_tile2)        //10のタイルを消す
                         for(i in 0..5){
                             FadeTile(1, uptiles_more[i])
@@ -3361,6 +3427,7 @@ class MathActivity : AppCompatActivity() {
 
             4 -> {  //１０の塊から5or6個のタイルを移動させるアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     for(i in 0..(number_down - 5)){ //7のタイルを右下に移動
                         var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
                         Move_Animetion(uptile_moveX)
@@ -3368,6 +3435,7 @@ class MathActivity : AppCompatActivity() {
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
+                        Sound(6)
                         for(i in 0..(number_down - 5)){ //８のタイルを消す
                             FadeTile(2, uptiles_more[i])
                         }
@@ -3405,6 +3473,7 @@ class MathActivity : AppCompatActivity() {
                         else -> button11.setEnabled(true)
                     }
 
+                    Sound(4)
                     if(number_up == 15 && number_down == 6){
                         Tile_ColorChange1("after_movetile_Lev10")
                         //右側のタイルが下側になる
@@ -3481,6 +3550,7 @@ class MathActivity : AppCompatActivity() {
 
             8 -> {
                 if(user_click_hintbutton == 1){
+                    Sound(5)
                     button11.setEnabled(false)
                     FadeTile(1, under_tile5_3)
                     Tile_ColorChange1("after_movetile_Lev10-2")
@@ -3557,6 +3627,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             1 -> {      //横にタイルを表示
+                if(user_click_hintbutton == 1) Sound(3)
                 button12.setEnabled(true)       //戻るボタンを押せるようにする
                 Tile_Position("delete", "all")   //全てのタイルを画面から消す
                 Tile_Position("visible", "uptile")      //上側の数字分タイルを表示
@@ -3566,9 +3637,11 @@ class MathActivity : AppCompatActivity() {
 
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
+                        Sound(5)
                         FadeTile(2, ten_tile2)        //10のタイルを消す
                         for(i in 0..5){
                             FadeTile(1, uptiles_more[i])
@@ -3593,6 +3666,7 @@ class MathActivity : AppCompatActivity() {
 
             4 -> {  //１０の塊から5or6個のタイルを移動させるアニメーション
                 if(user_click_hintbutton == 1){
+                    Sound(4)
                     var roop_time = 0
                     while(roop_time < number_down){
                         var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[5 - roop_time], "translationX", 260f)
@@ -3603,6 +3677,7 @@ class MathActivity : AppCompatActivity() {
                         roop_time++
                     }
                     Handler().postDelayed({
+                        Sound(6)
                         roop_time = 0
                         while(roop_time < number_down){
                             FadeTile(2, uptiles_more[5 - roop_time])
@@ -3639,6 +3714,7 @@ class MathActivity : AppCompatActivity() {
                     button11.setEnabled(false)
                     Tile_ColorChange1("after_movetile_Lev11")
 
+                    Sound(4)
                     for(i in 0..(10 - number_down - 5)){
                         var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 550f)
                         Move_Animetion(uptile_moveY1)
@@ -3743,16 +3819,12 @@ class MathActivity : AppCompatActivity() {
             }
 
 
-            textView4.text = "As_" + answer_total
-
-
         } else {       //解答が間違い
             Sound(2)
             Handler().postDelayed({
                 on_numberbutton = true      //数字ボタンの入力を許可
                 false_count += 1            //まちがいカウントを＋１
             }, 100)
-            textView4.text = "Af_" + answer_total
         }
     }
 
@@ -3797,7 +3869,6 @@ class MathActivity : AppCompatActivity() {
                 Number_down_one.text = number_down.toString()       //下の一の位の数字を表示
             }
         }
-        textView3.text = "Q_" + number_total
 
         Put_Button_11_13_Flag()
     }
