@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_math.*
 class MathActivity : AppCompatActivity() {
 
     var create_question = CreateQuestion()      //クラス宣言
+    var dpi = 0 //画面解像度
 
     val timer_start = System.currentTimeMillis()  //レベルミックスの時間計測用
     var select_calculate = 0    //足し算なら１、引き算なら2が入る
@@ -83,6 +84,9 @@ class MathActivity : AppCompatActivity() {
             LevelActivity::class.java
         )                        //LevelAtivityに(足し算or引き算、選択レベル)
 
+        val density = resources.displayMetrics.density
+        dpi = density.toInt()
+        dpiText.text = density.toString()
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {        //アンドロイドのバージョンがlolipop以前か
             //1個目のパラメーターはリソースの数に合わせる
@@ -3780,6 +3784,17 @@ class MathActivity : AppCompatActivity() {
         anime.duration = 1250
         anime.repeatCount = 0
         anime.start()
+    }
+
+    private fun ScreenType_Animeation(hint_level:Int):Float{
+        var moveTileAnime = 0f
+        var ScreenSize :String = dpiText.text.toString()
+
+        if(ScreenSize == "720"){
+
+        }
+
+        return moveTileAnime
     }
 
 
