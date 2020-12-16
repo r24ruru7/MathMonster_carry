@@ -86,7 +86,6 @@ class MathActivity : AppCompatActivity() {
 
         val density = resources.displayMetrics.density
         dpi = density.toInt()
-        dpiText.text = density.toString()
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {        //アンドロイドのバージョンがlolipop以前か
             //1個目のパラメーターはリソースの数に合わせる
@@ -918,11 +917,11 @@ class MathActivity : AppCompatActivity() {
 
             2 -> {      //5と5のタイルを合体
                 if(user_click_hintbutton == 1){ //ヒントボタンを押したとき
-                    var uptile52_moveX = ObjectAnimator.ofFloat(uptiles[5], "translationX", -390f)  //uptileのY軸を指定された分だけ下げる
+                    var uptile52_moveX = ObjectAnimator.ofFloat(uptiles[5], "translationX", ScreenType_Animeation("5_2",1))  //uptileのY軸を指定された分だけ下げる
                     Move_Animetion(uptile52_moveX)
-                    var uptile52_moveY = ObjectAnimator.ofFloat(uptiles[5], "translationY", 148f)  //uptileのY軸を指定された分だけ下げる
+                    var uptile52_moveY = ObjectAnimator.ofFloat(uptiles[5], "translationY", ScreenType_Animeation("5_2",2))  //uptileのY軸を指定された分だけ下げる
                     Move_Animetion(uptile52_moveY)
-                    var undertile52_moveX = ObjectAnimator.ofFloat(undertiles[5], "translationX", -390f)  //undertileのY軸を指定された分だけ下げる
+                    var undertile52_moveX = ObjectAnimator.ofFloat(undertiles[5], "translationX", ScreenType_Animeation("5_2",1))  //undertileのY軸を指定された分だけ下げる
                     Move_Animetion(undertile52_moveX)
                     Sound(4)
 
@@ -946,9 +945,9 @@ class MathActivity : AppCompatActivity() {
 
             3 -> {
                 Tile_Position("reset", "all")   //全てのタイルを初期値に戻す
-                uptiles[5].setTranslationX(-390f)       //上側5のタイルをX座標を移動
-                uptiles[5].setTranslationY(148f)        //上側5のタイルをY座標を移動
-                undertiles[5].setTranslationX(-390f)    //下側5のタイルをX座標を移動
+                uptiles[5].setTranslationX(ScreenType_Animeation("5_2",1))       //上側5のタイルをX座標を移動
+                uptiles[5].setTranslationY(ScreenType_Animeation("5_2",2))        //上側5のタイルをY座標を移動
+                undertiles[5].setTranslationX(ScreenType_Animeation("5_2",1))    //下側5のタイルをX座標を移動
                 uptiles[5].setVisibility(View.GONE)     //上側5のタイルを見えなくする
                 undertiles[5].setVisibility(View.GONE)  //下側5のタイルを見えなくする
                 ten_tile1.setVisibility(View.VISIBLE)   //10のタイルを出現させる
@@ -965,11 +964,11 @@ class MathActivity : AppCompatActivity() {
                     Tile_ColorChange1("after_movetile_Lev1")     //移動後のタイルの色を交互にさせる
                     Sound(4)
                     for(i in 6..number_up){     //上側のタイルを下のタイルに合体させるアニメーション
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (418 - 27 * (number_down - 5)).toFloat())  //uptileのY軸を指定された分だけ下げる
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("5_2",3))  //uptileのY軸を指定された分だけ下げる
                         Move_Animetion(uptile_moveY)
                     }
                     for(i in 6..number_down){   //下側のタイルを上のタイルに合体させるアニメーション
-                        var undertile_moveY = ObjectAnimator.ofFloat(undertiles[i], "translationY", 135f)  //undertileのY軸を指定された分だけ下げる
+                        var undertile_moveY = ObjectAnimator.ofFloat(undertiles[i], "translationY", ScreenType_Animeation("5_2",4))  //undertileのY軸を指定された分だけ下げる
                         Move_Animetion(undertile_moveY)
                     }
 
@@ -1030,11 +1029,11 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     Sound(4)
                     if(number_up < number_down){    //下が9の時
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", -27f)  //上のタイルの一番上にあるタイルを少しずらす
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement",1))  //上のタイルの一番上にあるタイルを少しずらす
                         Move_Animetion(uptile_moveY)
                     }
                     else {  //上が9の時
-                        var undertile_moveY = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                        var undertile_moveY = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement",1))  //下のタイルの一番上にあるタイルを少しずらす
                         Move_Animetion(undertile_moveY)
                     }
 
@@ -1049,10 +1048,10 @@ class MathActivity : AppCompatActivity() {
             4 -> {      //ずらしたタイルの位置を固定
                 Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
                 if(number_up < number_down){    //下が9の時
-                    uptiles[number_up - 1].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
+                    uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement",1))    //上のタイルの一番上にあるタイルをずらした位置に固定
                 }
                 else {  //上が9の時
-                    undertiles[number_down - 1].setTranslationY(-27f)    //下のタイルの一番上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement",1))    //下のタイルの一番上にあるタイルをずらした位置に固定
                 }
                 if(user_click_hintbutton == 2){
                     if(number_up < number_down){    //下が9の時
@@ -1069,13 +1068,13 @@ class MathActivity : AppCompatActivity() {
                     if(number_down < number_up) button13.setEnabled(false)
                     Sound(4)
                     if(number_up < number_down){    //下が9の時
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement",2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                         Move_Animetion(uptile_moveY)
                         Tile_ColorChange1("after_movetile_Lev2")     //移動後のタイルの色を黄色にする
                         FadeTile(2, undertiles[10])     //空白のタイルを隠す
                     }
                     else {  //上が9の時
-                        var undertile_moveY = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement",3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                         // ( ( (10 - number_down) * -27) - 40) - (27 * 9)　下側のタイルの一番上まで移動(10-num-1)　→　上側のタイル１に移動(40)　→　上のタイルの一番上まで移動(27*9)
                         Move_Animetion(undertile_moveY)
                         Tile_ColorChange1("after_movetile_Lev2")     //移動後のタイルの色を黄色にする
@@ -1099,15 +1098,15 @@ class MathActivity : AppCompatActivity() {
                         button13.setEnabled(false)
                     }
                     if(number_up < number_down){    //下が9の時
-                        uptiles[number_up - 1].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement",2))        //一つだけ動かしたタイルの位置を固定
                         undertiles[10].setVisibility(View.GONE)     //空白のタイルを消す
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
                             Sound(4)
-                            var uptile_moveX = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", -390f)    //10の位に移動
+                            var uptile_moveX = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動
                             Move_Animetion(uptile_moveX)
                             for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
-                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動
                                 Move_Animetion(undertile_moveX)
                             }
                             Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
@@ -1122,20 +1121,20 @@ class MathActivity : AppCompatActivity() {
                         },1500)
                     }
                     else {  //上が9の時
-                        undertiles[number_up - 1].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement",3))     //一つだけ動かしたタイルの位置を固定
                         uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
                             Sound(4)
-                            var undertile_moveX = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", -390f)    //10の位に移動する
+                            var undertile_moveX = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動する
                             Move_Animetion(undertile_moveX)
-                            var undertile_moveY = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            var undertile_moveY = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement",5))     //10の位に移動する
                             Move_Animetion(undertile_moveY)
 
                             for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
-                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", ScreenType_Animeation("complement",4))         //10の位に移動する
                                 Move_Animetion(uptile_moveX)
-                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement",6))      //10の位に移動する
                                 Move_Animetion(uptile_moveY)
 
                             }
@@ -1163,21 +1162,21 @@ class MathActivity : AppCompatActivity() {
 
             7 -> {      //アニメーション後、タイルの位置を固定
                 if(number_up < number_down){    //下が9の時
-                    uptiles[number_up - 1].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 1].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
                     uptiles[number_up - 1].setVisibility(View.GONE)     //移動したタイルは消す
                     for(i in 5..number_down){
-                        undertiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        undertiles[i].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
                         undertiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)   //10のタイルが表示される
                 }
                 else {    //上が9の時
-                    undertiles[number_down - 1].setTranslationX(-390f)       //10の位の位置に固定
-                    undertiles[number_down - 1].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement",5))       //10の位の位置に固定
                     undertiles[number_down - 1].setVisibility(View.GONE)        //移動したタイルは消す
                     for(i in 5..number_up){
-                        uptiles[i].setTranslationX(-390f)       //10の位の位置に固定
-                        uptiles[i].setTranslationY(283f)        //10の位の位置に固定
+                        uptiles[i].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement",6))        //10の位の位置に固定
                         uptiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)       //10のタイルが表示される
@@ -1189,7 +1188,7 @@ class MathActivity : AppCompatActivity() {
                     Sound(4)
                     if(number_up < number_down){
                         for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement",6))
                             Move_Animetion(uptile_moveY)
                         }
                         Level2_hint(1)
@@ -1200,7 +1199,7 @@ class MathActivity : AppCompatActivity() {
                 }
                 else {
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(0f)  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement",7))  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
                     }
                     button13.setEnabled(true)       //ヒントボタンを押せるようにする
                     Level2_hint(2)
@@ -1210,7 +1209,7 @@ class MathActivity : AppCompatActivity() {
             9 -> {      //アニメーション後、タイルの位置を固定
                 if(number_up < number_down){
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(283f)
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement",6))
                     }
                 }
                 button13.setEnabled(false)
@@ -1266,14 +1265,14 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     Sound(4)
                     if(number_up < number_down){    //下が8の時
-                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", -27f)  //上のタイルの一番上にあるタイルを少しずらす
-                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", -27f)  //上のタイルの二番目に上にあるタイルを少しずらす
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement",1))  //上のタイルの一番上にあるタイルを少しずらす
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ScreenType_Animeation("complement",1))  //上のタイルの二番目に上にあるタイルを少しずらす
                         Move_Animetion(uptile_moveY1)
                         Move_Animetion(uptile_moveY2)
                     }
                     else {  //上が8の時
-                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
-                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", -27f)  //下のタイルの二番目に上にあるタイルを少しずらす
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement",1))  //下のタイルの一番上にあるタイルを少しずらす
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ScreenType_Animeation("complement",1))  //下のタイルの二番目に上にあるタイルを少しずらす
                         Move_Animetion(undertile_moveY1)
                         Move_Animetion(undertile_moveY2)
                     }
@@ -1289,12 +1288,12 @@ class MathActivity : AppCompatActivity() {
             4 -> {      //ずらしたタイルの位置を固定
                 Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
                 if(number_up < number_down){    //下が8の時
-                    uptiles[number_up - 1].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
-                    uptiles[number_up - 2].setTranslationY(-27f)    //上のタイルの二番目に上にあるタイルをずらした位置に固定
+                    uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement",1))    //上のタイルの一番上にあるタイルをずらした位置に固定
+                    uptiles[number_up - 2].setTranslationY(ScreenType_Animeation("complement",1))    //上のタイルの二番目に上にあるタイルをずらした位置に固定
                 }
                 else {  //上が8の時
-                    undertiles[number_down - 1].setTranslationY(-27f)    //下のタイルの一番上にあるタイルをずらした位置に固定
-                    undertiles[number_down - 2].setTranslationY(-27f)    //下のタイルの二番目に上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement",1))    //下のタイルの一番上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 2].setTranslationY(ScreenType_Animeation("complement",1))    //下のタイルの二番目に上にあるタイルをずらした位置に固定
                 }
                 if(user_click_hintbutton == 2){
                     if(number_up < number_down){    //下が8の時
@@ -1313,8 +1312,8 @@ class MathActivity : AppCompatActivity() {
                     Sound(4)
                     if(number_down < number_up) button13.setEnabled(false)
                     if(number_up < number_down){    //下が8の時
-                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
-                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement",2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ScreenType_Animeation("complement",2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                         Move_Animetion(uptile_moveY1)
                         Move_Animetion(uptile_moveY2)
                         Tile_ColorChange1("after_movetile_Lev3")     //移動後のタイルの色を黄色にする
@@ -1322,8 +1321,8 @@ class MathActivity : AppCompatActivity() {
                         FadeTile(2, undertiles[10])     //空白のタイルを隠す
                     }
                     else {  //上が8の時
-                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
-                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement",3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ScreenType_Animeation("complement",3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                         // ( ( (10 - number_down) * -27) - 40) - (27 * 9)　下側のタイルの一番上まで移動(10-num-1)　→　上側のタイル１に移動(40)　→　上のタイルの一番上まで移動(27*9)
                         Move_Animetion(undertile_moveY1)
                         Move_Animetion(undertile_moveY2)
@@ -1348,19 +1347,19 @@ class MathActivity : AppCompatActivity() {
                         button13.setEnabled(false)
                     }
                     if(number_up < number_down){    //下が8の時
-                        uptiles[number_up - 1].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
-                        uptiles[number_up - 2].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement",2))        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 2].setTranslationY(ScreenType_Animeation("complement",2))        //一つだけ動かしたタイルの位置を固定
                         undertiles[9].setVisibility(View.GONE)
                         undertiles[10].setVisibility(View.GONE)     //空白のタイルを消す
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
                             Sound(4)
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", -390f)    //10の位に移動
-                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationX", -390f)    //10の位に移動
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動
+                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動
                             Move_Animetion(uptile_moveX1)
                             Move_Animetion(uptile_moveX2)
                             for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
-                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動
                                 Move_Animetion(undertile_moveX)
                             }
                             Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
@@ -1376,26 +1375,26 @@ class MathActivity : AppCompatActivity() {
                         },1500)
                     }
                     else {  //上が8の時
-                        undertiles[number_up - 1].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
-                        undertiles[number_up - 2].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement",3))     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 2].setTranslationY(ScreenType_Animeation("complement",3))     //一つだけ動かしたタイルの位置を固定
                         uptiles[9].setVisibility(View.GONE)        //空白のタイルを消す
                         uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
                             Sound(4)
-                            var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", -390f)    //10の位に移動する
-                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationX", -390f)    //10の位に移動する
+                            var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動する
+                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationX", ScreenType_Animeation("complement",4))    //10の位に移動する
                             Move_Animetion(undertile_moveX1)
                             Move_Animetion(undertile_moveX2)
-                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
-                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement",5))     //10の位に移動する
+                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ScreenType_Animeation("complement",5))     //10の位に移動する
                             Move_Animetion(undertile_moveY1)
                             Move_Animetion(undertile_moveY2)
 
                             for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
-                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", ScreenType_Animeation("complement",4))         //10の位に移動する
                                 Move_Animetion(uptile_moveX)
-                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement",6))      //10の位に移動する
                                 Move_Animetion(uptile_moveY)
 
                             }
@@ -1424,26 +1423,26 @@ class MathActivity : AppCompatActivity() {
 
             7 -> {      //アニメーション後、タイルの位置を固定
                 if(number_up < number_down){    //下が8の時
-                    uptiles[number_up - 1].setTranslationX(-390f)       //10の位の位置に固定
-                    uptiles[number_up - 2].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 1].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
+                    uptiles[number_up - 2].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
                     uptiles[number_up - 1].setVisibility(View.GONE)     //移動したタイルは消す
                     uptiles[number_up - 2].setVisibility(View.GONE)     //移動したタイルは消す
                     for(i in 5..number_down){
-                        undertiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        undertiles[i].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
                         undertiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)   //10のタイルが表示される
                 }
                 else {    //上が8の時
-                    undertiles[number_down - 1].setTranslationX(-390f)       //10の位の位置に固定
-                    undertiles[number_down - 1].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
-                    undertiles[number_down - 2].setTranslationX(-390f)       //10の位の位置に固定
-                    undertiles[number_down - 2].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement",5))       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationY(ScreenType_Animeation("complement",5))       //10の位の位置に固定
                     undertiles[number_down - 1].setVisibility(View.GONE)        //移動したタイルは消す
                     undertiles[number_down - 2].setVisibility(View.GONE)        //移動したタイルは消す
                     for(i in 5..number_up){
-                        uptiles[i].setTranslationX(-390f)       //10の位の位置に固定
-                        uptiles[i].setTranslationY(283f)        //10の位の位置に固定
+                        uptiles[i].setTranslationX(ScreenType_Animeation("complement",4))       //10の位の位置に固定
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement",6))        //10の位の位置に固定
                         uptiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)       //10のタイルが表示される
@@ -1455,7 +1454,7 @@ class MathActivity : AppCompatActivity() {
                     Sound(4)
                     if(number_up < number_down){
                         for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement",6))
                             Move_Animetion(uptile_moveY)
                         }
                         Level3_hint(1)
@@ -1466,7 +1465,7 @@ class MathActivity : AppCompatActivity() {
                 }
                 else {
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(0f)  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement",7))  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
                     }
                     button13.setEnabled(true)       //ヒントボタンを押せるようにする
                     Level3_hint(2)
@@ -1476,7 +1475,7 @@ class MathActivity : AppCompatActivity() {
             9 -> {      //アニメーション後、タイルの位置を固定
                 if(number_up < number_down){
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(283f)
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement",6))
                     }
                 }
                 button13.setEnabled(false)
@@ -1522,11 +1521,11 @@ class MathActivity : AppCompatActivity() {
                     5 -> {
                         if(user_click_hintbutton == 1){
                             Sound(4)
-                            var uptile52_moveX = ObjectAnimator.ofFloat(uptiles[5], "translationX", -390f)  //uptileのY軸を指定された分だけ下げる
+                            var uptile52_moveX = ObjectAnimator.ofFloat(uptiles[5], "translationX", ScreenType_Animeation("5_2",1))  //uptileのY軸を指定された分だけ下げる
                             Move_Animetion(uptile52_moveX)
-                            var uptile52_moveY = ObjectAnimator.ofFloat(uptiles[5], "translationY", 148f)  //uptileのY軸を指定された分だけ下げる
+                            var uptile52_moveY = ObjectAnimator.ofFloat(uptiles[5], "translationY", ScreenType_Animeation("5_2",2))  //uptileのY軸を指定された分だけ下げる
                             Move_Animetion(uptile52_moveY)
-                            var undertile52_moveX = ObjectAnimator.ofFloat(undertiles[5], "translationX", -390f)  //undertileのY軸を指定された分だけ下げる
+                            var undertile52_moveX = ObjectAnimator.ofFloat(undertiles[5], "translationX", ScreenType_Animeation("5_2",1))  //undertileのY軸を指定された分だけ下げる
                             Move_Animetion(undertile52_moveX)
                              Handler().postDelayed({         //5と5のタイルが10に変化するアニメーション
                                  Sound(5)
@@ -1584,9 +1583,9 @@ class MathActivity : AppCompatActivity() {
                 when(hint_button_select_flag){
                     5 -> {
                         Tile_Position("reset", "all")   //全てのタイルを初期値に戻す
-                        uptiles[5].setTranslationX(-390f)       //上側5のタイルをX座標を移動
-                        uptiles[5].setTranslationY(148f)        //上側5のタイルをY座標を移動
-                        undertiles[5].setTranslationX(-390f)    //下側5のタイルをX座標を移動
+                        uptiles[5].setTranslationX(ScreenType_Animeation("5_2",1))       //上側5のタイルをX座標を移動
+                        uptiles[5].setTranslationY(ScreenType_Animeation("5_2",2))        //上側5のタイルをY座標を移動
+                        undertiles[5].setTranslationX(ScreenType_Animeation("5_2",1))    //下側5のタイルをX座標を移動
                         uptiles[5].setVisibility(View.GONE)     //上側5のタイルを見えなくする
                         undertiles[5].setVisibility(View.GONE)  //下側5のタイルを見えなくする
                         ten_tile1.setVisibility(View.VISIBLE)   //10のタイルを出現させる
@@ -1639,11 +1638,11 @@ class MathActivity : AppCompatActivity() {
                             Sound(4)
                             Tile_ColorChange1("after_movetile_Lev1")     //移動後のタイルの色を交互にさせる
                             for(i in 6..number_up){     //上側のタイルを下のタイルに合体させるアニメーション
-                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (418 - 27 * (number_down - 5)).toFloat())  //uptileのY軸を指定された分だけ下げる
+                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("5_2",3))  //uptileのY軸を指定された分だけ下げる
                                 Move_Animetion(uptile_moveY)
                             }
                             for(i in 6..number_down){   //下側のタイルを上のタイルに合体させるアニメーション
-                                var undertile_moveY = ObjectAnimator.ofFloat(undertiles[i], "translationY", 135f)  //undertileのY軸を指定された分だけ下げる
+                                var undertile_moveY = ObjectAnimator.ofFloat(undertiles[i], "translationY", ScreenType_Animeation("5_2",4))  //undertileのY軸を指定された分だけ下げる
                                 Move_Animetion(undertile_moveY)
                             }
                             Level4_hint(1)
@@ -1664,13 +1663,13 @@ class MathActivity : AppCompatActivity() {
                                     when(number_up){    //上の数字が５or6
                                         5 -> {
                                             for(i in (5 - (10 - number_down))..4){
-                                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
                                                 Move_Animetion(uptile_moveY)
                                             }
                                         }
                                         6 -> {
-                                            var uptile_moveY5 = ObjectAnimator.ofFloat(uptiles[4], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
-                                            var uptile_moveY6 = ObjectAnimator.ofFloat(uptiles[6], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                                            var uptile_moveY5 = ObjectAnimator.ofFloat(uptiles[4], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
+                                            var uptile_moveY6 = ObjectAnimator.ofFloat(uptiles[6], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
                                             Move_Animetion(uptile_moveY5)
                                             Move_Animetion(uptile_moveY6)
 
@@ -1678,10 +1677,10 @@ class MathActivity : AppCompatActivity() {
                                     }
                                 }
                                 else {  //合計が15以上の時
-                                    var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up], "translationY", -27f)  //上のタイルの一番上にあるタイルを少しずらす
+                                    var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up], "translationY", ScreenType_Animeation("complement", 1))  //上のタイルの一番上にあるタイルを少しずらす
                                     Move_Animetion(uptile_moveY1)
                                     if(number_down == 8){   //大きい数字が８の時
-                                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", -27f)  //上のタイルの二番目に上にあるタイルを少しずらす
+                                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement", 1))  //上のタイルの二番目に上にあるタイルを少しずらす
                                         Move_Animetion(uptile_moveY2)
                                     }
                                 }
@@ -1691,23 +1690,23 @@ class MathActivity : AppCompatActivity() {
                                     when(number_down){    //下の数字が５or6
                                         5 -> {
                                             for(i in (5 - (10 - number_up))..4){
-                                                var undertile_moveY = ObjectAnimator.ofFloat(undertiles[i], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                                                var undertile_moveY = ObjectAnimator.ofFloat(undertiles[i], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
                                                 Move_Animetion(undertile_moveY)
                                             }
                                         }
                                         6 -> {
-                                            var undertile_moveY5 = ObjectAnimator.ofFloat(undertiles[4], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
-                                            var undertile_moveY6 = ObjectAnimator.ofFloat(undertiles[6], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                                            var undertile_moveY5 = ObjectAnimator.ofFloat(undertiles[4], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
+                                            var undertile_moveY6 = ObjectAnimator.ofFloat(undertiles[6], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
                                             Move_Animetion(undertile_moveY5)
                                             Move_Animetion(undertile_moveY6)
                                         }
                                     }
                                 }
                                 else {  //合計が15以上の時
-                                    var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
+                                    var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
                                     Move_Animetion(undertile_moveY1)
                                     if(number_up == 8){   //大きい数字が８の時
-                                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", -27f)  //下のタイルの二番目に上にあるタイルを少しずらす
+                                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの二番目に上にあるタイルを少しずらす
                                         Move_Animetion(undertile_moveY2)
                                     }
                                 }
@@ -1726,10 +1725,10 @@ class MathActivity : AppCompatActivity() {
                 when(hint_button_select_flag){
                     5 -> {
                         for(i in 6..number_up){
-                            uptiles[i].setTranslationY((418 - 27 * (number_down - 5)).toFloat())
+                            uptiles[i].setTranslationY(ScreenType_Animeation("5_2",3))
                         }
                         for(i in 6..number_down){
-                            undertiles[i].setTranslationY(135f)
+                            undertiles[i].setTranslationY(ScreenType_Animeation("5_2",4))
                         }
                         if(number_total < 15){
                             button11.setEnabled(false)
@@ -1742,18 +1741,18 @@ class MathActivity : AppCompatActivity() {
                                 when(number_up){    //下の数字が５or6
                                     5 -> {
                                         for(i in (5 - (10 - number_down))..4){
-                                            uptiles[i].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
+                                            uptiles[i].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの一番上にあるタイルをずらした位置に固定
                                         }
                                     }
                                     6 -> {
-                                        uptiles[6].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
-                                        uptiles[4].setTranslationY(-27f)    //上のタイルの二番目に上にあるタイルをずらした位置に固定
+                                        uptiles[6].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの一番上にあるタイルをずらした位置に固定
+                                        uptiles[4].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの二番目に上にあるタイルをずらした位置に固定
                                     }
                                 }
                             }
                             else{
-                                uptiles[number_up].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
-                                if (number_down == 8) uptiles[number_up - 1].setTranslationY(-27f)    //上のタイルの二番目に上にあるタイルをずらした位置に固定
+                                uptiles[number_up].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの一番上にあるタイルをずらした位置に固定
+                                if (number_down == 8) uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの二番目に上にあるタイルをずらした位置に固定
                             }
                         }
                         else {  //上が8の時
@@ -1761,18 +1760,18 @@ class MathActivity : AppCompatActivity() {
                                 when(number_down){    //下の数字が５or6
                                     5 -> {
                                         for(i in (5 - (10 - number_up))..4){
-                                            undertiles[i].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
+                                            undertiles[i].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの一番上にあるタイルをずらした位置に固定
                                         }
                                     }
                                     6 -> {
-                                        undertiles[6].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
-                                        undertiles[4].setTranslationY(-27f)    //上のタイルの二番目に上にあるタイルをずらした位置に固定
+                                        undertiles[6].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの一番上にあるタイルをずらした位置に固定
+                                        undertiles[4].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの二番目に上にあるタイルをずらした位置に固定
                                     }
                                 }
                             }
                             else{
-                                undertiles[number_down].setTranslationY(-27f)    //下のタイルの一番上にあるタイルをずらした位置に固定
-                                if(number_up == 8) undertiles[number_down - 1].setTranslationY(-27f)    //下のタイルの二番目に上にあるタイルをずらした位置に固定
+                                undertiles[number_down].setTranslationY(ScreenType_Animeation("complement", 1))    //下のタイルの一番上にあるタイルをずらした位置に固定
+                                if(number_up == 8) undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement", 1))    //下のタイルの二番目に上にあるタイルをずらした位置に固定
                             }
                         }
                         if(user_click_hintbutton == 2){
@@ -1818,23 +1817,23 @@ class MathActivity : AppCompatActivity() {
                                     when(number_up){
                                         5 -> {
                                             for(i in (5 - (10 - number_down))..4){
-                                                var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[i], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                                var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                                 Move_Animetion(uptile_moveY1)
                                             }
                                         }
                                         6 -> {
-                                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[4], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[4], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                             Move_Animetion(uptile_moveY1)
-                                            var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[6], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                            var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[6], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                             Move_Animetion(uptile_moveY2)
                                         }
                                     }
                                 }
                                 else{
-                                    var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                    var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                     Move_Animetion(uptile_moveY1)
                                     if(number_down == 8){
-                                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                         Move_Animetion(uptile_moveY2)
                                     }
                                 }
@@ -1848,24 +1847,24 @@ class MathActivity : AppCompatActivity() {
                                     when(number_down){
                                         5 -> {
                                             for(i in (5 - (10 - number_up))..4){
-                                                var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[i], "translationY", (( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                                var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[i], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                                 Move_Animetion(undertile_moveY1)
                                             }
                                         }
                                         6 -> {
-                                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[4], "translationY", (( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[4], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                             Move_Animetion(undertile_moveY1)
-                                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[6], "translationY", (( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[6], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                             Move_Animetion(undertile_moveY2)
                                         }
                                     }
                                 }
                                 else {
-                                    var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                    var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                     // ( ( (10 - number_down) * -27) - 40) - (27 * 9)　下側のタイルの一番上まで移動(10-num-1)　→　上側のタイル１に移動(40)　→　上のタイルの一番上まで移動(27*9)
                                     Move_Animetion(undertile_moveY1)
                                     if(number_up == 8){
-                                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                                         Move_Animetion(undertile_moveY2)
                                     }
                                 }
@@ -1910,18 +1909,18 @@ class MathActivity : AppCompatActivity() {
                                     when(number_up){
                                         5 -> {
                                             for(i in (5 - (10 - number_down))..4){
-                                                uptiles[i].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                                                uptiles[i].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
                                                 if(i == 3)undertiles[9].setVisibility(View.GONE)
                                                 else undertiles[10].setVisibility(View.GONE)
                                             }
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
                                                 Sound(4)
                                                 for(i in (5 - (10 - number_down))..4){
-                                                    var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)    //10の位に移動
+                                                    var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[i], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                                     Move_Animetion(uptile_moveX1)
                                                 }
                                                 for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
-                                                    var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                                    var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                                     Move_Animetion(undertile_moveX)
                                                 }
                                                 Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
@@ -1939,20 +1938,20 @@ class MathActivity : AppCompatActivity() {
                                         }
 
                                         6 -> {
-                                            uptiles[6].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                                            uptiles[6].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
                                             undertiles[10].setVisibility(View.GONE)
-                                            uptiles[4].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                                            uptiles[4].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
                                             undertiles[9].setVisibility(View.GONE)     //空白のタイルを消す
 
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
                                                 Sound(4)
-                                                var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[4], "translationX", -390f)    //10の位に移動
+                                                var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[4], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                                 Move_Animetion(uptile_moveX1)
-                                                var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[6], "translationX", -390f)    //10の位に移動
+                                                var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[6], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                                 Move_Animetion(uptile_moveX2)
 
                                                 for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
-                                                    var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                                    var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                                     Move_Animetion(undertile_moveX)
                                                 }
                                                 Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
@@ -1971,23 +1970,23 @@ class MathActivity : AppCompatActivity() {
 
                                 }
                                 else{
-                                    uptiles[number_up].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                                    uptiles[number_up].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
                                     undertiles[10].setVisibility(View.GONE)
                                     if(number_down == 8){
-                                        uptiles[number_up - 1].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                                        uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
                                         undertiles[9].setVisibility(View.GONE)     //空白のタイルを消す
                                     }
 
                                     Handler().postDelayed({     //タイル合体後、10の位に移動する
                                         Sound(4)
-                                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up], "translationX", -390f)    //10の位に移動
+                                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                         Move_Animetion(uptile_moveX1)
                                         if(number_down == 8){
-                                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", -390f)    //10の位に移動
+                                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                             Move_Animetion(uptile_moveX2)
                                         }
                                         for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
-                                            var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                            var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                             Move_Animetion(undertile_moveX)
                                         }
                                         Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
@@ -2009,7 +2008,7 @@ class MathActivity : AppCompatActivity() {
                                     when(number_down){
                                         5 -> {
                                             for(i in (5 - (10 - number_up))..4){
-                                                undertiles[i].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                                                undertiles[i].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
                                                 if(i == 3) uptiles[9].setVisibility(View.GONE)        //空白のタイルを消す
                                                 uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
                                             }
@@ -2017,16 +2016,16 @@ class MathActivity : AppCompatActivity() {
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
                                                 Sound(4)
                                                 for(i in (5 - (10 - number_up))..4){
-                                                    var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動する
+                                                    var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[i], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
                                                     Move_Animetion(undertile_moveX1)
-                                                    var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[i], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                                                    var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[i], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
                                                     Move_Animetion(undertile_moveY1)
                                                 }
 
                                                 for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
-                                                    var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                                    var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", ScreenType_Animeation("complement", 4))         //10の位に移動する
                                                     Move_Animetion(uptile_moveX)
-                                                    var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                                    var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 6))      //10の位に移動する
                                                     Move_Animetion(uptile_moveY)
 
                                                 }
@@ -2046,26 +2045,26 @@ class MathActivity : AppCompatActivity() {
                                         }
 
                                         6 -> {
-                                            undertiles[4].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                                            undertiles[4].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
                                             uptiles[9].setVisibility(View.GONE)        //空白のタイルを消す
-                                            undertiles[6].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                                            undertiles[6].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
                                             uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
 
                                             Handler().postDelayed({     //タイル合体後、10の位に移動する
                                                 Sound(4)
-                                                var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[4], "translationX", -390f)    //10の位に移動する
+                                                var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[4], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
                                                 Move_Animetion(undertile_moveX1)
-                                                var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[4], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                                                var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[4], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
                                                 Move_Animetion(undertile_moveY1)
-                                                var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[6], "translationX", -390f)    //10の位に移動する
+                                                var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[6], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
                                                 Move_Animetion(undertile_moveX2)
-                                                var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[6], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                                                var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[6], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
                                                 Move_Animetion(undertile_moveY2)
 
                                                 for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
-                                                    var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                                    var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", ScreenType_Animeation("complement", 4))         //10の位に移動する
                                                     Move_Animetion(uptile_moveX)
-                                                    var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                                    var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 6))      //10の位に移動する
                                                     Move_Animetion(uptile_moveY)
 
                                                 }
@@ -2086,30 +2085,30 @@ class MathActivity : AppCompatActivity() {
                                 }
 
                                 else {
-                                    undertiles[number_up].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                                    undertiles[number_up].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
                                     uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
                                     if(number_up == 8){
-                                        undertiles[number_up - 1].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                                        undertiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
                                         uptiles[9].setVisibility(View.GONE)        //空白のタイルを消す
                                     }
 
                                     Handler().postDelayed({     //タイル合体後、10の位に移動する
                                         Sound(4)
-                                        var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationX", -390f)    //10の位に移動する
+                                        var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
                                         Move_Animetion(undertile_moveX1)
-                                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
                                         Move_Animetion(undertile_moveY1)
                                         if(number_up == 8){
-                                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", -390f)    //10の位に移動する
+                                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
                                             Move_Animetion(undertile_moveX2)
-                                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
                                             Move_Animetion(undertile_moveY2)
                                         }
 
                                         for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
-                                            var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                            var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", ScreenType_Animeation("complement", 4))         //10の位に移動する
                                             Move_Animetion(uptile_moveX)
-                                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 6))      //10の位に移動する
                                             Move_Animetion(uptile_moveY)
 
                                         }
@@ -2164,31 +2163,31 @@ class MathActivity : AppCompatActivity() {
                     if(number_total < 15){
                         when(number_up){
                             5 -> {
-                                uptiles[number_up - 1].setTranslationX(-390f)       //10の位の位置に固定
+                                uptiles[number_up - 1].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                                 uptiles[number_up - 1].setVisibility(View.GONE)     //移動したタイルは消す
                                 if(number_down == 8){
-                                    uptiles[number_up - 2].setTranslationX(-390f)       //10の位の位置に固定
+                                    uptiles[number_up - 2].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                                     uptiles[number_up - 2].setVisibility(View.GONE)     //移動したタイルは消す
                                 }
                             }
                             6 -> {
-                                uptiles[4].setTranslationX(-390f)       //10の位の位置に固定
+                                uptiles[4].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                                 uptiles[4].setVisibility(View.GONE)     //移動したタイルは消す
-                                uptiles[6].setTranslationX(-390f)       //10の位の位置に固定
+                                uptiles[6].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                                 uptiles[6].setVisibility(View.GONE)     //移動したタイルは消す
                             }
                         }
                     }
                     else {
-                        uptiles[number_up].setTranslationX(-390f)       //10の位の位置に固定
+                        uptiles[number_up].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                         uptiles[number_up].setVisibility(View.GONE)     //移動したタイルは消す
                         if(number_down == 8){
-                            uptiles[number_up - 1].setTranslationX(-390f)       //10の位の位置に固定
+                            uptiles[number_up - 1].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                             uptiles[number_up - 1].setVisibility(View.GONE)     //移動したタイルは消す
                         }
                     }
                     for(i in 5..number_down){
-                        undertiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        undertiles[i].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                         undertiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)   //10のタイルが表示される
@@ -2198,37 +2197,37 @@ class MathActivity : AppCompatActivity() {
                     if(number_total < 15){
                         when(number_down){
                             5 -> {
-                                undertiles[number_down - 1].setTranslationX(-390f)       //10の位の位置に固定
-                                undertiles[number_down - 1].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                                undertiles[number_down - 1].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                                undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
                                 undertiles[number_down - 1].setVisibility(View.GONE)        //移動したタイルは消す
                                 if(number_up == 8){
-                                    undertiles[number_down - 2].setTranslationX(-390f)       //10の位の位置に固定
-                                    undertiles[number_down - 2].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                                    undertiles[number_down - 2].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                                    undertiles[number_down - 2].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
                                     undertiles[number_down - 2].setVisibility(View.GONE)        //移動したタイルは消す
                                 }
                             }
                             6 -> {
-                                undertiles[4].setTranslationX(-390f)       //10の位の位置に固定
+                                undertiles[4].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                                 undertiles[4].setVisibility(View.GONE)     //移動したタイルは消す
-                                undertiles[6].setTranslationX(-390f)       //10の位の位置に固定
+                                undertiles[6].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                                 undertiles[6].setVisibility(View.GONE)     //移動したタイルは消す
                             }
                         }
                     }
                     else {
-                        undertiles[number_down].setTranslationX(-390f)       //10の位の位置に固定
-                        undertiles[number_down].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                        undertiles[number_down].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                        undertiles[number_down].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
                         undertiles[number_down].setVisibility(View.GONE)        //移動したタイルは消す
                         if(number_up == 8){
-                            undertiles[number_down - 1].setTranslationX(-390f)       //10の位の位置に固定
-                            undertiles[number_down - 1].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                            undertiles[number_down - 1].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                            undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
                             undertiles[number_down - 1].setVisibility(View.GONE)        //移動したタイルは消す
                         }
                     }
 
                     for(i in 5..number_up){
-                        uptiles[i].setTranslationX(-390f)       //10の位の位置に固定
-                        uptiles[i].setTranslationY(283f)        //10の位の位置に固定
+                        uptiles[i].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement", 6))        //10の位の位置に固定
                         uptiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)       //10のタイルが表示される
@@ -2240,7 +2239,7 @@ class MathActivity : AppCompatActivity() {
                     Sound(4)
                     if(number_up < number_down){
                         for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 6))
                             Move_Animetion(uptile_moveY)
                         }
                         Level4_hint(1)
@@ -2251,7 +2250,7 @@ class MathActivity : AppCompatActivity() {
                 }
                 else {
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(0f)  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement", 7))  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
                     }
                     button13.setEnabled(true)       //ヒントボタンを押せるようにする
                     Level4_hint(2)
@@ -2261,7 +2260,7 @@ class MathActivity : AppCompatActivity() {
             10 -> {      //アニメーション後、タイルの位置を固定
                 if(number_up < number_down){
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(283f)
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement", 6))
                     }
                 }
                 button13.setEnabled(false)
@@ -2331,26 +2330,26 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     Sound(4)
                     if(number_up < number_down){    //下が7の時
-                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", -27f)  //上のタイルの一番上にあるタイルを少しずらす
-                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", -27f)  //上のタイルの二番目に上にあるタイルを少しずらす
-                        var uptile_moveY3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationY", -27f)  //上のタイルの三番目に上にあるタイルを少しずらす
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement", 1))  //上のタイルの一番上にあるタイルを少しずらす
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ScreenType_Animeation("complement", 1))  //上のタイルの二番目に上にあるタイルを少しずらす
+                        var uptile_moveY3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationY", ScreenType_Animeation("complement", 1))  //上のタイルの三番目に上にあるタイルを少しずらす
                         Move_Animetion(uptile_moveY1)
                         Move_Animetion(uptile_moveY2)
                         Move_Animetion(uptile_moveY3)
                         if(number_down == 6){   //6の時は4つ目のタイルも
-                            var uptile_moveY4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationY", -27f)  //上のタイルの四番目に上にあるタイルを少しずらす
+                            var uptile_moveY4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationY", ScreenType_Animeation("complement", 1))  //上のタイルの四番目に上にあるタイルを少しずらす
                             Move_Animetion(uptile_moveY4)
                         }
                     }
                     else {  //上が7の時
-                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", -27f)  //下のタイルの一番上にあるタイルを少しずらす
-                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", -27f)  //下のタイルの二番目に上にあるタイルを少しずらす
-                        var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", -27f)  //下のタイルの三番目に上にあるタイルを少しずらす
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの一番上にあるタイルを少しずらす
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの二番目に上にあるタイルを少しずらす
+                        var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの三番目に上にあるタイルを少しずらす
                         Move_Animetion(undertile_moveY1)
                         Move_Animetion(undertile_moveY2)
                         Move_Animetion(undertile_moveY3)
                         if(number_up == 6){ //6の時は4つ目のタイルも
-                            var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", -27f)  //下のタイルの四番目に上にあるタイルを少しずらす
+                            var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", ScreenType_Animeation("complement", 1))  //下のタイルの四番目に上にあるタイルを少しずらす
                             Move_Animetion(undertile_moveY4)
                         }
                     }
@@ -2366,19 +2365,19 @@ class MathActivity : AppCompatActivity() {
             4 -> {      //ずらしたタイルの位置を固定
                 Tile_Position("reset", "all")   //全てのタイルを初期位置に戻す
                 if(number_up < number_down){    //下が7の時
-                    uptiles[number_up - 1].setTranslationY(-27f)    //上のタイルの一番上にあるタイルをずらした位置に固定
-                    uptiles[number_up - 2].setTranslationY(-27f)    //上のタイルの二番目にあるタイルをずらした位置に固定
-                    uptiles[number_up - 3].setTranslationY(-27f)    //上のタイルの三番目にあるタイルをずらした位置に固定
+                    uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの一番上にあるタイルをずらした位置に固定
+                    uptiles[number_up - 2].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの二番目にあるタイルをずらした位置に固定
+                    uptiles[number_up - 3].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの三番目にあるタイルをずらした位置に固定
                     if(number_down == 6){   //6の時は4つ目のタイルも
-                        uptiles[number_up - 4].setTranslationY(-27f)    //上のタイルの四番目にあるタイルをずらした位置に固定
+                        uptiles[number_up - 4].setTranslationY(ScreenType_Animeation("complement", 1))    //上のタイルの四番目にあるタイルをずらした位置に固定
                     }
                 }
                 else {  //上が7の時
-                    undertiles[number_down - 1].setTranslationY(-27f)    //下のタイルの一番上にあるタイルをずらした位置に固定
-                    undertiles[number_down - 2].setTranslationY(-27f)    //下のタイルの二番目に上にあるタイルをずらした位置に固定
-                    undertiles[number_down - 3].setTranslationY(-27f)    //下のタイルの三番目に上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement", 1))    //下のタイルの一番上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 2].setTranslationY(ScreenType_Animeation("complement", 1))    //下のタイルの二番目に上にあるタイルをずらした位置に固定
+                    undertiles[number_down - 3].setTranslationY(ScreenType_Animeation("complement", 1))    //下のタイルの三番目に上にあるタイルをずらした位置に固定
                     if(number_up == 6){ //6の時は4つ目のタイルも
-                        undertiles[number_down - 4].setTranslationY(-27f)    //下のタイルの四番目に上にあるタイルをずらした位置に固定
+                        undertiles[number_down - 4].setTranslationY(ScreenType_Animeation("complement", 1))    //下のタイルの四番目に上にあるタイルをずらした位置に固定
                     }
                 }
                 if(user_click_hintbutton == 2){
@@ -2406,14 +2405,14 @@ class MathActivity : AppCompatActivity() {
                     Sound(4)
                     if(number_down < number_up) button13.setEnabled(false)
                     if(number_up < number_down){    //下が7の時
-                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
-                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
-                        var uptile_moveY3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var uptile_moveY3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                         Move_Animetion(uptile_moveY1)
                         Move_Animetion(uptile_moveY2)
                         Move_Animetion(uptile_moveY3)
                         if(number_down == 6){   //6の時は4つ目のタイルも
-                            var uptile_moveY4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationY", ((27 * (number_up - 1)) + 30 + 10).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                            var uptile_moveY4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationY", ScreenType_Animeation("complement", 2))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                             Move_Animetion(uptile_moveY4)
                             FadeTile(2, undertiles[7])     //空白のタイルを隠す
                         }
@@ -2424,15 +2423,15 @@ class MathActivity : AppCompatActivity() {
 
                     }
                     else {  //上が7の時
-                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
-                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
-                        var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                        var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                         // ( ( (10 - number_down) * -27) - 40) - (27 * 9)　下側のタイルの一番上まで移動(10-num-1)　→　上側のタイル１に移動(40)　→　上のタイルの一番上まで移動(27*9)
                         Move_Animetion(undertile_moveY1)
                         Move_Animetion(undertile_moveY2)
                         Move_Animetion(undertile_moveY3)
                         if(number_up == 6){ //6の時は4つ目のタイルも
-                            var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", ( ( -(10 - number_down) * 27) - 283  ).toFloat())  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
+                            var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", ScreenType_Animeation("complement", 3))  //タイル配置の間隔27, タイル一つは重なりがないため30, 上と下の隙間10
                             Move_Animetion(undertile_moveY4)
                             FadeTile(2, uptiles[7])        //空白のタイルを隠す
                         }
@@ -2458,31 +2457,31 @@ class MathActivity : AppCompatActivity() {
                         button13.setEnabled(false)
                     }
                     if(number_up < number_down){    //下が7の時
-                        uptiles[number_up - 1].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
-                        uptiles[number_up - 2].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
-                        uptiles[number_up - 3].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 2].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
+                        uptiles[number_up - 3].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
                         undertiles[8].setVisibility(View.GONE)
                         undertiles[9].setVisibility(View.GONE)
                         undertiles[10].setVisibility(View.GONE)     //空白のタイルを消す
                         if(number_down == 6){   //6の時は4つ目のタイルも
-                            uptiles[number_up - 4].setTranslationY(((27 * (number_up - 1)) + 30 + 10).toFloat())        //一つだけ動かしたタイルの位置を固定
+                            uptiles[number_up - 4].setTranslationY(ScreenType_Animeation("complement", 2))        //一つだけ動かしたタイルの位置を固定
                             undertiles[7].setVisibility(View.GONE)
                         }
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
                             Sound(4)
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", -390f)    //10の位に移動
-                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationX", -390f)    //10の位に移動
-                            var uptile_moveX3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationX", -390f)    //10の位に移動
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles[number_up - 1], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
+                            var uptile_moveX2 = ObjectAnimator.ofFloat(uptiles[number_up - 2], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
+                            var uptile_moveX3 = ObjectAnimator.ofFloat(uptiles[number_up - 3], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                             Move_Animetion(uptile_moveX1)
                             Move_Animetion(uptile_moveX2)
                             Move_Animetion(uptile_moveX3)
                             if(number_down == 6){   //6の時は4つ目のタイルも
-                                var uptile_moveX4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationX", -390f)    //10の位に移動
+                                var uptile_moveX4 = ObjectAnimator.ofFloat(uptiles[number_up - 4], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                 Move_Animetion(uptile_moveX4)
                             }
                             for(i in 5..number_down){   //下のタイルは5のタイルと6より上のタイルを動かす
-                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", -390f)    //10の位に移動
+                                var undertile_moveX = ObjectAnimator.ofFloat(undertiles[i], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動
                                 Move_Animetion(undertile_moveX)
                             }
                             Handler().postDelayed({     //タイルが10の位に移動後、10のタイルに変化
@@ -2502,42 +2501,42 @@ class MathActivity : AppCompatActivity() {
                         },1500)
                     }
                     else {  //上が8の時
-                        undertiles[number_up - 1].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
-                        undertiles[number_up - 2].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
-                        undertiles[number_up - 3].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 1].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 2].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
+                        undertiles[number_up - 3].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
                         uptiles[8].setVisibility(View.GONE)        //空白のタイルを消す
                         uptiles[9].setVisibility(View.GONE)        //空白のタイルを消す
                         uptiles[10].setVisibility(View.GONE)        //空白のタイルを消す
                         if(number_up == 6){ //6の時は4つ目のタイルも
-                            undertiles[number_up - 4].setTranslationY(( ( -(10 - number_down) * 27) - 283  ).toFloat())     //一つだけ動かしたタイルの位置を固定
+                            undertiles[number_up - 4].setTranslationY(ScreenType_Animeation("complement", 3))     //一つだけ動かしたタイルの位置を固定
                             uptiles[7].setVisibility(View.GONE)        //空白のタイルを消す
                         }
 
                         Handler().postDelayed({     //タイル合体後、10の位に移動する
                             Sound(4)
-                            var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", -390f)    //10の位に移動する
-                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationX", -390f)    //10の位に移動する
-                            var undertile_moveX3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationX", -390f)    //10の位に移動する
+                            var undertile_moveX1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
+                            var undertile_moveX2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
+                            var undertile_moveX3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
                             Move_Animetion(undertile_moveX1)
                             Move_Animetion(undertile_moveX2)
                             Move_Animetion(undertile_moveX3)
-                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
-                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
-                            var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                            var undertile_moveY1 = ObjectAnimator.ofFloat(undertiles[number_down - 1], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
+                            var undertile_moveY2 = ObjectAnimator.ofFloat(undertiles[number_down - 2], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
+                            var undertile_moveY3 = ObjectAnimator.ofFloat(undertiles[number_down - 3], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
                             Move_Animetion(undertile_moveY1)
                             Move_Animetion(undertile_moveY2)
                             Move_Animetion(undertile_moveY3)
                             if(number_up == 6){ //6の時は4つ目のタイルも
-                                var undertile_moveX4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationX", -390f)    //10の位に移動する
+                                var undertile_moveX4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationX", ScreenType_Animeation("complement", 4))    //10の位に移動する
                                 Move_Animetion(undertile_moveX4)
-                                var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", (-(10 - number_down) * 27).toFloat())     //10の位に移動する
+                                var undertile_moveY4 = ObjectAnimator.ofFloat(undertiles[number_down - 4], "translationY", ScreenType_Animeation("complement", 5))     //10の位に移動する
                                 Move_Animetion(undertile_moveY4)
                             }
 
                             for(i in 5..number_up){     //上のタイルは5のタイルと6より上のタイルが10の位に移動
-                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", -390f)         //10の位に移動する
+                                var uptile_moveX = ObjectAnimator.ofFloat(uptiles[i], "translationX", ScreenType_Animeation("complement", 4))         //10の位に移動する
                                 Move_Animetion(uptile_moveX)
-                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)      //10の位に移動する
+                                var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 6))      //10の位に移動する
                                 Move_Animetion(uptile_moveY)
 
                             }
@@ -2570,40 +2569,40 @@ class MathActivity : AppCompatActivity() {
 
             7 -> {      //アニメーション後、タイルの位置を固定
                 if(number_up < number_down){    //下が8の時
-                    uptiles[number_up - 1].setTranslationX(-390f)       //10の位の位置に固定
-                    uptiles[number_up - 2].setTranslationX(-390f)       //10の位の位置に固定
-                    uptiles[number_up - 3].setTranslationX(-390f)       //10の位の位置に固定
+                    uptiles[number_up - 1].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                    uptiles[number_up - 2].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                    uptiles[number_up - 3].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                     uptiles[number_up - 1].setVisibility(View.GONE)     //移動したタイルは消す
                     uptiles[number_up - 2].setVisibility(View.GONE)     //移動したタイルは消す
                     uptiles[number_up - 3].setVisibility(View.GONE)     //移動したタイルは消す
                     if(number_down == 6){   //6の時は4つ目のタイルも
-                        uptiles[number_up - 4].setTranslationX(-390f)       //10の位の位置に固定
+                        uptiles[number_up - 4].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                         uptiles[number_up - 4].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     for(i in 5..number_down){
-                        undertiles[i].setTranslationX(-390f)       //10の位の位置に固定
+                        undertiles[i].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
                         undertiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)   //10のタイルが表示される
                 }
                 else {    //上が8の時
-                    undertiles[number_down - 1].setTranslationX(-390f)       //10の位の位置に固定
-                    undertiles[number_down - 1].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
-                    undertiles[number_down - 2].setTranslationX(-390f)       //10の位の位置に固定
-                    undertiles[number_down - 2].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
-                    undertiles[number_down - 3].setTranslationX(-390f)       //10の位の位置に固定
-                    undertiles[number_down - 3].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                    undertiles[number_down - 1].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                    undertiles[number_down - 2].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
+                    undertiles[number_down - 3].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                    undertiles[number_down - 3].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
                     undertiles[number_down - 1].setVisibility(View.GONE)        //移動したタイルは消す
                     undertiles[number_down - 2].setVisibility(View.GONE)        //移動したタイルは消す
                     undertiles[number_down - 3].setVisibility(View.GONE)        //移動したタイルは消す
                     if(number_up == 6){ //6の時は4つ目のタイルも
-                        undertiles[number_down - 4].setTranslationX(-390f)       //10の位の位置に固定
-                        undertiles[number_down - 4].setTranslationY((-(10 - number_down) * 27).toFloat())       //10の位の位置に固定
+                        undertiles[number_down - 4].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                        undertiles[number_down - 4].setTranslationY(ScreenType_Animeation("complement", 5))       //10の位の位置に固定
                         undertiles[number_down - 4].setVisibility(View.GONE)        //移動したタイルは消す
                     }
                     for(i in 5..number_up){
-                        uptiles[i].setTranslationX(-390f)       //10の位の位置に固定
-                        uptiles[i].setTranslationY(283f)        //10の位の位置に固定
+                        uptiles[i].setTranslationX(ScreenType_Animeation("complement", 4))       //10の位の位置に固定
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement", 6))        //10の位の位置に固定
                         uptiles[i].setVisibility(View.GONE)     //移動したタイルは消す
                     }
                     ten_tile1.setVisibility(View.VISIBLE)       //10のタイルが表示される
@@ -2615,7 +2614,7 @@ class MathActivity : AppCompatActivity() {
                     Sound(4)
                     if(number_up < number_down){
                         for(i in 0..number_up-1){       //残りのタイルを下に移動するアニメーション
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 283f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("complement", 6))
                             Move_Animetion(uptile_moveY)
                         }
                         Level5_hint(1)
@@ -2626,7 +2625,7 @@ class MathActivity : AppCompatActivity() {
                 }
                 else {
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(0f)  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement", 7))  //戻ってくるとき残っていた上にあったタイルをもとの位置に戻す
                     }
                     button13.setEnabled(true)       //ヒントボタンを押せるようにする
                     Level5_hint(2)
@@ -2636,7 +2635,7 @@ class MathActivity : AppCompatActivity() {
             9 -> {      //アニメーション後、タイルの位置を固定
                 if(number_up < number_down){
                     for(i in 0..number_up-1){
-                        uptiles[i].setTranslationY(283f)
+                        uptiles[i].setTranslationY(ScreenType_Animeation("complement", 6))
                     }
                 }
                 button13.setEnabled(false)
@@ -2669,7 +2668,7 @@ class MathActivity : AppCompatActivity() {
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
                     Sound(4)
-                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", ScreenType_Animeation("minus_hint", 1))
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
                         Sound(5)
@@ -2688,7 +2687,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             3 -> {  //移動したタイルを固定
-                ten_tile2.setTranslationX(140f)
+                ten_tile2.setTranslationX(ScreenType_Animeation("minus_hint", 1))
                 ten_tile2.setVisibility(View.GONE)
                 for(i in 0..5){
                     uptiles_more[i].setVisibility(View.VISIBLE)
@@ -2699,9 +2698,9 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     Sound(4)
                     for(i in 0..4){
-                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX)
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 283f)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 3))
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
@@ -2724,8 +2723,8 @@ class MathActivity : AppCompatActivity() {
 
             5 -> {
                 for(i in 0..4){
-                    uptiles_more[i].setTranslationX(260f)
-                    uptiles_more[i].setTranslationY(283f)
+                    uptiles_more[i].setTranslationX(ScreenType_Animeation("minus_hint", 2))
+                    uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 3))
                     uptiles_more[i].setVisibility(View.GONE)
                 }
                 for(i in 0..10){
@@ -2743,21 +2742,21 @@ class MathActivity : AppCompatActivity() {
                         Tile_ColorChange1("after_movetile_Lev7")
                         //右側のタイルが下側になる
                         for(i in 0..(number_up - 10 - 1)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
                         if(5 <= (number_up - 10)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
 
                         //10の塊だったタイルは上になる
                         for(i in (6 - (10 - number_down))..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((number_up - 10) * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 5))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                         }
-                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[5], "translationX", 260f)
+                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[5], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX1)
 
                         Handler().postDelayed({
@@ -2768,20 +2767,20 @@ class MathActivity : AppCompatActivity() {
                         Tile_ColorChange1("after_movetile_Lev7")
                         //１０の塊だったタイルは下になる
                         for(i in (6 - (10 - number_down))..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((10 - number_down - 1) * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 6))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                         }
-                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[5], "translationX", 260f)
+                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[5], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX1)
 
                         //右側のタイルは上になる
                         for(i in 0..(number_up - 10 - 1)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (793 - ((number_up - 10) * 27)).toFloat())
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 5))
                             Move_Animetion(uptile_moveY)
                         }
                         if(5 <= (number_up - 10)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
                         Handler().postDelayed({
@@ -2802,32 +2801,32 @@ class MathActivity : AppCompatActivity() {
                 if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
                     //右側のタイルが下側になる
                     for(i in 0..(number_up - 10 - 1)){
-                        uptiles[i].setTranslationY(550f)
+                        uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                     if(5 <= (number_up - 10)){
-                        uptiles[10].setTranslationY(550f)
+                        uptiles[10].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                     //10の塊だったタイルは上になる
                     for(i in (6 - (10 - number_down))..5){
-                        uptiles_more[i].setTranslationY((793 - ((number_up - 10) * 27)).toFloat())
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 5))
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                     }
-                    uptiles_more[5].setTranslationX(260f)
+                    uptiles_more[5].setTranslationX(ScreenType_Animeation("minus_hint", 2))
                 }
                 else {
                     //１０の塊だったタイルは下になる
                     for(i in (6 - (10 - number_down))..5){
-                        uptiles_more[i].setTranslationY((793 - ((10 - number_down - 1) * 27)).toFloat())
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 6))
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                     }
-                    uptiles_more[5].setTranslationX(260f)
+                    uptiles_more[5].setTranslationX(ScreenType_Animeation("minus_hint", 2))
 
                     //右側のタイルは上になる
                     for(i in 0..(number_up - 10 - 1)){
-                        uptiles[i].setTranslationY((793 - ((number_up - 10) * 27)).toFloat())
+                        uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 5))
                     }
                     if(5 <= (number_up - 10)){
-                        uptiles[10].setTranslationY(550f)
+                        uptiles[10].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                 }
             }
@@ -2856,7 +2855,7 @@ class MathActivity : AppCompatActivity() {
 
             9 -> {
                 under_tile5_3.setVisibility(View.VISIBLE)
-                under_tile5_3.setTranslationY(267f)
+                under_tile5_3.setTranslationY(ScreenType_Animeation("minus_hint", 7))
                 uptiles_more[5].setVisibility(View.GONE)
                 for(i in 0..3) {
                     uptiles[i].setVisibility(View.GONE)
@@ -2865,7 +2864,7 @@ class MathActivity : AppCompatActivity() {
         }
     }
 
-    private fun  Level8_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+    private fun  Level8_hint(user_click_hintbutton: Int){   //引き算レベル2のヒント
         val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
         val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
         val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
@@ -2891,7 +2890,7 @@ class MathActivity : AppCompatActivity() {
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
                     Sound(4)
-                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", ScreenType_Animeation("minus_hint", 1))
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
                         Sound(5)
@@ -2910,7 +2909,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             3 -> {  //移動したタイルを固定
-                ten_tile2.setTranslationX(140f)
+                ten_tile2.setTranslationX(ScreenType_Animeation("minus_hint", 1))
                 ten_tile2.setVisibility(View.GONE)
                 for(i in 0..5){
                     uptiles_more[i].setVisibility(View.VISIBLE)
@@ -2921,9 +2920,9 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     Sound(4)
                     for(i in 0..3){ //８のタイルを右下に移動
-                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX)
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 283f)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 3))
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
@@ -2946,8 +2945,8 @@ class MathActivity : AppCompatActivity() {
 
             5 -> {      //移動したタイルを固定するアニメーション
                 for(i in 0..3){
-                    uptiles_more[i].setTranslationX(260f)
-                    uptiles_more[i].setTranslationY(283f)
+                    uptiles_more[i].setTranslationX(ScreenType_Animeation("minus_hint", 2))
+                    uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 3))
                     uptiles_more[i].setVisibility(View.GONE)
                 }
                 for(i in 0..10){
@@ -2969,20 +2968,20 @@ class MathActivity : AppCompatActivity() {
                         Tile_ColorChange1("after_movetile_Lev8")
                         //右側のタイルが下側になる
                         for(i in 0..(number_up - 10 - 1)){      //右側のタイルのアニメーション
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
                         if(5 <= (number_up - 10)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
 
                         //10の塊だったタイルは上になる
                         for(i in (6 - (10 - number_down))..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((number_up - 10 + 1) * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 8))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                             Move_Animetion(uptile_moveX1)
                         }
 
@@ -2995,21 +2994,21 @@ class MathActivity : AppCompatActivity() {
                         Tile_ColorChange1("after_movetile_Lev8")
                         //１０の塊だったタイルは下になる
                         for(i in (6 - (10 - number_down))..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((10 - number_down - 1) * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 6))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                             Move_Animetion(uptile_moveX1)
                         }
 
 
                         //右側のタイルは上になる
                         for(i in 0..(number_up - 10 - 1)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - ((number_up - 10 + 1) * 27)).toFloat())
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 9))
                             Move_Animetion(uptile_moveY)
                         }
                         if(5 <= (number_up - 10)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
                         Handler().postDelayed({
@@ -3032,32 +3031,32 @@ class MathActivity : AppCompatActivity() {
                 if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
                     //右側のタイルが下側になる
                     for(i in 0..(number_up - 10 - 1)){
-                        uptiles[i].setTranslationY(550f)
+                        uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                     if(5 <= (number_up - 10)){
-                        uptiles[10].setTranslationY(550f)
+                        uptiles[10].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                     //10の塊だったタイルは上になる
                     for(i in (6 - (10 - number_down))..5){
-                        uptiles_more[i].setTranslationY((793 - ((number_up - 10 + 1) * 27)).toFloat())
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 8))
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                     }
-                    uptiles_more[5].setTranslationX(260f)
+                    uptiles_more[5].setTranslationX(ScreenType_Animeation("minus_hint", 2))
                 }
                 else {
                     //１０の塊だったタイルは下になる
                     for(i in (6 - (10 - number_down))..5){
-                        uptiles_more[i].setTranslationY((793 - ((10 - number_down - 1) * 27)).toFloat())
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 6))
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                     }
-                    uptiles_more[5].setTranslationX(260f)
+                    uptiles_more[5].setTranslationX(ScreenType_Animeation("minus_hint", 2))
 
                     //右側のタイルは上になる
                     for(i in 0..(number_up - 10 - 1)){
-                        uptiles[i].setTranslationY((550 - ((number_up - 10 + 1) * 27)).toFloat())
+                        uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 9))
                     }
                     if(5 <= (number_up - 10)){
-                        uptiles[10].setTranslationY(550f)
+                        uptiles[10].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                 }
             }
@@ -3090,7 +3089,7 @@ class MathActivity : AppCompatActivity() {
 
             9 -> {
                 under_tile5_3.setVisibility(View.VISIBLE)
-                under_tile5_3.setTranslationY(267f)
+                under_tile5_3.setTranslationY(ScreenType_Animeation("minus_hint", 7))
                 if(number_total == 5) uptiles_more[5].setVisibility(View.GONE)  //答えが５なら消す、６なら消さない
                 uptiles_more[4].setVisibility(View.GONE)
                 for(i in 0..2) {
@@ -3100,7 +3099,7 @@ class MathActivity : AppCompatActivity() {
         }
     }
 
-    private fun  Level9_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+    private fun  Level9_hint(user_click_hintbutton: Int){   //引き算レベル3のヒント
         val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
         val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
         val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
@@ -3126,7 +3125,7 @@ class MathActivity : AppCompatActivity() {
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
                     Sound(4)
-                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", ScreenType_Animeation("minus_hint", 1))
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
                         Sound(5)
@@ -3145,7 +3144,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             3 -> {  //移動したタイルを固定
-                ten_tile2.setTranslationX(140f)
+                ten_tile2.setTranslationX(ScreenType_Animeation("minus_hint", 1))
                 ten_tile2.setVisibility(View.GONE)
                 for(i in 0..5){
                     uptiles_more[i].setVisibility(View.VISIBLE)
@@ -3156,9 +3155,9 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     Sound(4)
                     for(i in 0..2){ //7のタイルを右下に移動
-                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX)
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 283f)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 3))
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
@@ -3181,8 +3180,8 @@ class MathActivity : AppCompatActivity() {
 
             5 -> {      //移動したタイルを固定するアニメーション
                 for(i in 0..2){
-                    uptiles_more[i].setTranslationX(260f)
-                    uptiles_more[i].setTranslationY(283f)
+                    uptiles_more[i].setTranslationX(ScreenType_Animeation("minus_hint", 2))
+                    uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 3))
                     uptiles_more[i].setVisibility(View.GONE)
                 }
                 for(i in 0..10){
@@ -3204,20 +3203,20 @@ class MathActivity : AppCompatActivity() {
                         Tile_ColorChange1("after_movetile_Lev9")
                         //右側のタイルが下側になる
                         for(i in 0..(number_up - 10 - 1)){      //右側のタイルのアニメーション
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
                         if(5 <= (number_up - 10)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
 
                         //10の塊だったタイルは上になる
                         for(i in (6 - (10 - number_down))..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((number_up - 10 + 2) * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 10))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                             Move_Animetion(uptile_moveX1)
                         }
 
@@ -3230,21 +3229,21 @@ class MathActivity : AppCompatActivity() {
                         Tile_ColorChange1("after_movetile_Lev9")
                         //１０の塊だったタイルは下になる
                         for(i in (6 - (10 - number_down))..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((10 - number_down - 1) * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 6))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                             Move_Animetion(uptile_moveX1)
                         }
 
 
                         //右側のタイルは上になる
                         for(i in 0..(number_up - 10 - 1)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - (3 * 27)).toFloat())
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 11))
                             Move_Animetion(uptile_moveY)
                         }
                         if(5 <= (number_up - 10)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", ScreenType_Animeation("minus_hint", 4))
                             Move_Animetion(uptile_moveY)
                         }
                         Handler().postDelayed({
@@ -3267,32 +3266,32 @@ class MathActivity : AppCompatActivity() {
                 if((10 - number_down) <= (number_up - 10)){  //10のタイルから９を引いたときに上の１の位のタイルと大きさを比較して１の位が大きいとき
                     //右側のタイルが下側になる
                     for(i in 0..(number_up - 10 - 1)){
-                        uptiles[i].setTranslationY(550f)
+                        uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                     if(5 <= (number_up - 10)){
-                        uptiles[10].setTranslationY(550f)
+                        uptiles[10].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                     //10の塊だったタイルは上になる
                     for(i in (6 - (10 - number_down))..5){
-                        uptiles_more[i].setTranslationY((793 - ((number_up - 10 + 2) * 27)).toFloat())
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 10))
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                     }
-                    uptiles_more[5].setTranslationX(260f)
+                    uptiles_more[5].setTranslationX(ScreenType_Animeation("minus_hint", 2))
                 }
                 else {
                     //１０の塊だったタイルは下になる
                     for(i in (6 - (10 - number_down))..5){
-                        uptiles_more[i].setTranslationY((793 - ((10 - number_down - 1) * 27)).toFloat())
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 6))
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
                     }
-                    uptiles_more[5].setTranslationX(260f)
+                    uptiles_more[5].setTranslationX(ScreenType_Animeation("minus_hint", 2))
 
                     //右側のタイルは上になる
                     for(i in 0..(number_up - 10 - 1)){
-                        uptiles[i].setTranslationY((550 - (3 * 27)).toFloat())
+                        uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 11))
                     }
                     if(5 <= (number_up - 10)){
-                        uptiles[10].setTranslationY(550f)
+                        uptiles[10].setTranslationY(ScreenType_Animeation("minus_hint", 4))
                     }
                 }
             }
@@ -3355,7 +3354,7 @@ class MathActivity : AppCompatActivity() {
 
             9 -> {
                 under_tile5_3.setVisibility(View.VISIBLE)
-                under_tile5_3.setTranslationY(267f)
+                under_tile5_3.setTranslationY(ScreenType_Animeation("minus_hint", 7))
                 when(number_total) {
                     5 -> {  //答えが５なら残ったタイルはすべて消す
                         uptiles_more[5].setVisibility(View.GONE)
@@ -3377,7 +3376,7 @@ class MathActivity : AppCompatActivity() {
         }
     }
 
-    private fun  Level10_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+    private fun  Level10_hint(user_click_hintbutton: Int){   //引き算レベル4のヒント
         val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
         val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
         val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
@@ -3403,7 +3402,7 @@ class MathActivity : AppCompatActivity() {
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
                     Sound(4)
-                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", ScreenType_Animeation("minus_hint", 1))
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
                         Sound(5)
@@ -3422,7 +3421,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             3 -> {  //移動したタイルを固定
-                ten_tile2.setTranslationX(140f)
+                ten_tile2.setTranslationX(ScreenType_Animeation("minus_hint", 1))
                 ten_tile2.setVisibility(View.GONE)
                 for(i in 0..5){
                     uptiles_more[i].setVisibility(View.VISIBLE)
@@ -3433,9 +3432,9 @@ class MathActivity : AppCompatActivity() {
                 if(user_click_hintbutton == 1){
                     Sound(4)
                     for(i in 0..(number_down - 5)){ //7のタイルを右下に移動
-                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX)
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 283f)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 3))
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
@@ -3459,8 +3458,8 @@ class MathActivity : AppCompatActivity() {
 
             5 -> {      //移動したタイルを固定するアニメーション
                 for(i in 0..(number_down - 5)){
-                    uptiles_more[i].setTranslationX(260f)
-                    uptiles_more[i].setTranslationY(283f)
+                    uptiles_more[i].setTranslationX(ScreenType_Animeation("minus_hint", 2))
+                    uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 3))
                     uptiles_more[i].setVisibility(View.GONE)
                 }
                 for(i in 0..(number_down - 1)){
@@ -3481,15 +3480,15 @@ class MathActivity : AppCompatActivity() {
                     if(number_up == 15 && number_down == 6){
                         Tile_ColorChange1("after_movetile_Lev10")
                         //右側のタイルが下側になる
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", 550f)
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[10], "translationY", ScreenType_Animeation("minus_hint", 4))
                         Move_Animetion(uptile_moveY)
 
                         //10の塊だったタイルは上になる
                         for(i in 2..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - (8 * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 12))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                             Move_Animetion(uptile_moveX1)
                         }
 
@@ -3501,15 +3500,15 @@ class MathActivity : AppCompatActivity() {
                         Tile_ColorChange1("after_movetile_Lev10")
                         //１０の塊だったタイルは下になる
                         for(i in (6 - (10 - number_down))..5){
-                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", (793 - ((10 - number_down - 1) * 27)).toFloat())
+                            var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 6))
                             Move_Animetion(uptile_moveY1)
                             // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                            var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                             Move_Animetion(uptile_moveX1)
                         }
                         //右側のタイルは上になる
                         for(i in 0..(number_up - 10 - 1)){
-                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - ((10 - number_down) * 27)).toFloat())
+                            var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 13))
                             Move_Animetion(uptile_moveY)
                         }
                         Handler().postDelayed({
@@ -3530,23 +3529,23 @@ class MathActivity : AppCompatActivity() {
 
             7 -> {
                 if(number_up == 15 && number_down == 6){
-                    uptiles[10].setTranslationY(550f)
+                    uptiles[10].setTranslationY(ScreenType_Animeation("minus_hint", 4))
 
                     //10の塊だったタイルは上になる
                     for(i in 2..5){
-                        uptiles_more[i].setTranslationY((793 - (8 * 27)).toFloat())
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 12))
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                        uptiles_more[i].setTranslationX(260f)
+                        uptiles_more[i].setTranslationX(ScreenType_Animeation("minus_hint", 2))
                     }
 
                 }
                 else {
                     for(i in (6 - (10 - number_down))..5){
-                        uptiles_more[i].setTranslationY(793 - ((10 - number_down - 1) * 27).toFloat())
-                        uptiles_more[i].setTranslationX(260f)
+                        uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 6))
+                        uptiles_more[i].setTranslationX(ScreenType_Animeation("minus_hint", 2))
                     }
                     for(i in 0..(number_up - 10 - 1)){
-                        uptiles[i].setTranslationY(550 - ((10 - number_down) * 27).toFloat())
+                        uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 13))
                     }
 
                 }
@@ -3598,7 +3597,7 @@ class MathActivity : AppCompatActivity() {
 
             9 -> {
                 under_tile5_3.setVisibility(View.VISIBLE)
-                under_tile5_3.setTranslationY(267f)
+                under_tile5_3.setTranslationY(ScreenType_Animeation("minus_hint", 7))
                 when(number_down) {
                     6 -> {
                         for(i in 2..5){
@@ -3616,7 +3615,7 @@ class MathActivity : AppCompatActivity() {
         }
     }
 
-    private fun  Level11_hint(user_click_hintbutton: Int){   //引き算レベル1のヒント
+    private fun  Level11_hint(user_click_hintbutton: Int){   //引き算レベル5のヒント
         val uptiles = listOf( up_tile1, up_tile2, up_tile3 ,up_tile4 ,up_tile5, up_tile6, up_tile7, up_tile8, up_tile9, up_tile10, up_tile5_2)  //上側のタイルリスト
         val undertiles = listOf( under_tile1, under_tile2, under_tile3, under_tile4, under_tile5, under_tile6, under_tile7, under_tile8, under_tile9, under_tile10, under_tile5_2)  //下側のタイルリスト
         val uptiles_more = listOf( up_tile15_2, up_tile16, up_tile17, up_tile18, up_tile19, up_tile20)
@@ -3642,7 +3641,7 @@ class MathActivity : AppCompatActivity() {
             2 -> {  //10のタイルを右に移動するアニメーション
                 if(user_click_hintbutton == 1){
                     Sound(4)
-                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", 140f)
+                    var uptile_moveX = ObjectAnimator.ofFloat(ten_tile2, "translationX", ScreenType_Animeation("minus_hint", 1))
                     Move_Animetion(uptile_moveX)
                     Handler().postDelayed({
                         Sound(5)
@@ -3661,7 +3660,7 @@ class MathActivity : AppCompatActivity() {
             }
 
             3 -> {  //移動したタイルを固定
-                ten_tile2.setTranslationX(140f)
+                ten_tile2.setTranslationX(ScreenType_Animeation("minus_hint", 1))
                 ten_tile2.setVisibility(View.GONE)
                 for(i in 0..5){
                     uptiles_more[i].setVisibility(View.VISIBLE)
@@ -3673,9 +3672,9 @@ class MathActivity : AppCompatActivity() {
                     Sound(4)
                     var roop_time = 0
                     while(roop_time < number_down){
-                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[5 - roop_time], "translationX", 260f)
+                        var uptile_moveX = ObjectAnimator.ofFloat(uptiles_more[5 - roop_time], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX)
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[5 - roop_time], "translationY", (553 - (number_down * 27)).toFloat())
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles_more[5 - roop_time], "translationY", ScreenType_Animeation("minus_hint", 14))
                         Move_Animetion(uptile_moveY)
                         //553→左の上から右の下のタイルに移動する量
                         roop_time++
@@ -3703,8 +3702,8 @@ class MathActivity : AppCompatActivity() {
             5 -> {      //移動したタイルを固定するアニメーション
                 var roop_time = 0
                 while(roop_time < number_down){
-                    uptiles_more[5 - roop_time].setTranslationX(260f)
-                    uptiles_more[5 - roop_time].setTranslationY((553 - (number_down * 27)).toFloat())
+                    uptiles_more[5 - roop_time].setTranslationX(ScreenType_Animeation("minus_hint", 2))
+                    uptiles_more[5 - roop_time].setTranslationY(ScreenType_Animeation("minus_hint", 14))
                     uptiles_more[5 - roop_time].setVisibility(View.GONE)
                     roop_time++
                 }
@@ -3720,16 +3719,16 @@ class MathActivity : AppCompatActivity() {
 
                     Sound(4)
                     for(i in 0..(10 - number_down - 5)){
-                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", 550f)
+                        var uptile_moveY1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationY", ScreenType_Animeation("minus_hint", 4))
                         Move_Animetion(uptile_moveY1)
                         // 793→10のタイルが一番下まで行くピクセル数、　27→タイル１枚の高さ
-                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", 260f)
+                        var uptile_moveX1 = ObjectAnimator.ofFloat(uptiles_more[i], "translationX", ScreenType_Animeation("minus_hint", 2))
                         Move_Animetion(uptile_moveX1)
                     }
 
                     //右側のタイルは上になる
                     for(i in 0..(number_up - 10 - 1)){
-                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", (550 - ((10 - number_down) * 27)).toFloat())
+                        var uptile_moveY = ObjectAnimator.ofFloat(uptiles[i], "translationY", ScreenType_Animeation("minus_hint", 13))
                         Move_Animetion(uptile_moveY)
                     }
                     Handler().postDelayed({
@@ -3749,12 +3748,12 @@ class MathActivity : AppCompatActivity() {
 
             7 -> {
                 for(i in 0..(10 - number_down - 5)){
-                    uptiles_more[i].setTranslationY(550f)
-                    uptiles_more[i].setTranslationX(260f)
+                    uptiles_more[i].setTranslationY(ScreenType_Animeation("minus_hint", 4))
+                    uptiles_more[i].setTranslationX(ScreenType_Animeation("minus_hint", 2))
                 }
                 //右側のタイルは上になる
                 for(i in 0..(number_up - 10 - 1)){
-                    uptiles[i].setTranslationY(550 - ((10 - number_down) * 27).toFloat())
+                    uptiles[i].setTranslationY(ScreenType_Animeation("minus_hint", 13))
                 }
             }
 
@@ -3786,12 +3785,57 @@ class MathActivity : AppCompatActivity() {
         anime.start()
     }
 
-    private fun ScreenType_Animeation(hint_level:Int):Float{
+    private fun ScreenType_Animeation(play_mode:String, move_level:Int):Float{
         var moveTileAnime = 0f
         var ScreenSize :String = dpiText.text.toString()
 
-        if(ScreenSize == "720"){
+        if(ScreenSize == "720"){    //mdpiアニメーション
+            when(play_mode){
+                "5_2" -> {
+                    when(move_level){
+                        1 -> moveTileAnime = -390.0f //1の位から10の位にタイルを動かすX軸のアニメーション
+                        2 -> moveTileAnime = 148.0f //1の位から10の位にタイルを動かすuptileのY軸のアニメーション
+                        3 -> moveTileAnime = (418 - 27 * (number_down - 5)).toFloat()   //uptileをundertileに合体させるY軸のアニメーション
+                        4 -> moveTileAnime = 135.0f //undertileをuptileに合体させるY軸のアニメーション
+                    }
+                }
+                "complement" -> {
+                    when(move_level){
+                        1 -> moveTileAnime = -27.0f //タイルを一つ分上に動かすY軸のアニメーション
+                        2 -> moveTileAnime = ((27 * (number_up - 1)) + 30 + 10).toFloat()   //uptileをundertileに合体させて10を作るY軸のアニメーション
+                        3 -> moveTileAnime = ( ( -(10 - number_down) * 27) - 283  ).toFloat()   //undertileをuptileに合体させて10を作るY軸のアニメーション
+                        4 -> moveTileAnime = -390.0f //1の位から10の位にタイルを動かすX軸のアニメーション
+                        5 -> moveTileAnime = (-(10 - number_down) * 27).toFloat()   //uptileに移動したundertileを10の位の位置に動かすY軸のアニメーション
+                        6 -> moveTileAnime = 283.0f //10になったuptileを10の位に動かすX軸のアニメーション
+                        7 -> moveTileAnime = 0.0f   //もとの位置に戻す
+                    }
+                }
+                "minus_hint" -> {
+                    when(move_level){
+                        1 -> moveTileAnime = 140.0f //10の位から1の位に10のタイルを移すX軸のアニメーション
+                        2 -> moveTileAnime = 260.0f //引く分のタイルを移動させるX軸のアニメーション
+                        3 -> moveTileAnime = 283.0f //引く分のタイルを移動させるY軸のアニメーション
+                        4 -> moveTileAnime = 550.0f //上の数字右側が下に来るときのY軸のアニメーション
+                        5 -> moveTileAnime = (793 - ((number_up - 10) * 27)).toFloat()  //タイルが上側として合体するY軸のアニメーション(レベル1)
+                        6 -> moveTileAnime = (793 - ((10 - number_down - 1) * 27)).toFloat()    //10の塊だったタイルが下側として合体するY軸のアニメーション
+                        7 -> moveTileAnime = 267.0f //答えのタイルが5に変化するときに隠してた5のタイルを移動させるY軸のアニメーション
 
+                        8 -> moveTileAnime = (793 - ((number_up - 10 + 1) * 27)).toFloat()  //タイルが上側として合体するY軸のアニメーション(レベル2)
+                        9 -> moveTileAnime = (550 - ((number_up - 10 + 1) * 27)).toFloat() //上の数字右側が上に来るときのY軸のアニメーション
+
+                        10 -> moveTileAnime = (793 - ((number_up - 10 + 2) * 27)).toFloat() //タイルが上側として合体するY軸のアニメーション(レベル3)
+                        11 -> moveTileAnime = (550 - (3 * 27)).toFloat()    //上の数字右側が上に来るときのY軸のアニメーション
+
+                        12 -> moveTileAnime = (793 - (8 * 27)).toFloat()    //15-6の時に10の塊が下に来るときのY軸のアニメーション
+                        13 -> moveTileAnime = (550 - ((10 - number_down) * 27)).toFloat()   //右側のタイルが上に来るY軸のアニメーション
+
+                        14 -> moveTileAnime = (553 - (number_down * 27)).toFloat()  //左上から右下のタイルに移動するY軸のアニメーション
+                        15 -> moveTileAnime
+                        16 -> moveTileAnime
+                        17 -> moveTileAnime
+                    }
+                }
+            }
         }
 
         return moveTileAnime
