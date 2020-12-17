@@ -3795,7 +3795,7 @@ class MathActivity : AppCompatActivity() {
                     when(move_level){
                         1 -> moveTileAnime = -390.0f //1の位から10の位にタイルを動かすX軸のアニメーション
                         2 -> moveTileAnime = 148.0f //1の位から10の位にタイルを動かすuptileのY軸のアニメーション
-                        3 -> moveTileAnime = (418 - 27 * (number_down - 5)).toFloat()   //uptileをundertileに合体させるY軸のアニメーション
+                        3 -> moveTileAnime = (418 - 27 * (number_down - 5)).toFloat()   //uptileをundertileに合体させるY軸のアニメーション(uptile6がundertile1に移動する量から引く)
                         4 -> moveTileAnime = 135.0f //undertileをuptileに合体させるY軸のアニメーション
                     }
                 }
@@ -3806,7 +3806,7 @@ class MathActivity : AppCompatActivity() {
                         3 -> moveTileAnime = ( ( -(10 - number_down) * 27) - 283  ).toFloat()   //undertileをuptileに合体させて10を作るY軸のアニメーション
                         4 -> moveTileAnime = -390.0f //1の位から10の位にタイルを動かすX軸のアニメーション
                         5 -> moveTileAnime = (-(10 - number_down) * 27).toFloat()   //uptileに移動したundertileを10の位の位置に動かすY軸のアニメーション
-                        6 -> moveTileAnime = 283.0f //10になったuptileを10の位に動かすX軸のアニメーション
+                        6 -> moveTileAnime = 283.0f //uptileの残りを下に動かすY軸のアニメーション
                         7 -> moveTileAnime = 0.0f   //もとの位置に戻す
                     }
                 }
@@ -3830,6 +3830,53 @@ class MathActivity : AppCompatActivity() {
                         13 -> moveTileAnime = (550 - ((10 - number_down) * 27)).toFloat()   //右側のタイルが上に来るY軸のアニメーション
 
                         14 -> moveTileAnime = (553 - (number_down * 27)).toFloat()  //左上から右下のタイルに移動するY軸のアニメーション
+                        15 -> moveTileAnime
+                        16 -> moveTileAnime
+                        17 -> moveTileAnime
+                    }
+                }
+            }
+        } else if(ScreenSize == "600"){    //sw600dpアニメーション dpiの倍率がmdpiの2倍のため移動量はdp×2の値になる
+            when(play_mode){
+                "5_2" -> {
+                    when(move_level){
+                        1 -> moveTileAnime = -600.0f //1の位から10の位にタイルを動かすX軸のアニメーション
+                        2 -> moveTileAnime = 240.0f //1の位から10の位にタイルを動かすuptileのY軸のアニメーション
+                        3 -> moveTileAnime = (560 - 32 * (number_down - 5)).toFloat()   //uptileをundertileに合体させるY軸のアニメーション
+                        4 -> moveTileAnime = 160.0f //undertileをuptileに合体させるY軸のアニメーション
+                    }
+                }
+                "complement" -> {
+                    when(move_level){
+                        1 -> moveTileAnime = -32.0f //タイルを一つ分上に動かすY軸のアニメーション
+                        2 -> moveTileAnime = ((32 * (number_up - 1)) + 112).toFloat()   //uptileをundertileに合体させて10を作るY軸のアニメーション(uptile1がundertile10の位置に来る量が112)
+                        3 -> moveTileAnime = ( ( -(10 - number_down) * 32) - 400  ).toFloat()   //undertileをuptileに合体させて10を作るY軸のアニメーション
+                        4 -> moveTileAnime = -600.0f //1の位から10の位にタイルを動かすX軸のアニメーション
+                        5 -> moveTileAnime = (-(10 - number_down) * 32).toFloat()   //uptileに移動したundertileを10の位の位置に動かすY軸のアニメーション
+                        6 -> moveTileAnime = 400.0f //uptileの残りを下に動かすY軸のアニメーション
+                        7 -> moveTileAnime = 0.0f   //もとの位置に戻す
+                    }
+                }
+                "minus_hint" -> {
+                    when(move_level){
+                        1 -> moveTileAnime = 200.0f //10の位から1の位に10のタイルを移すX軸のアニメーション
+                        2 -> moveTileAnime = 400.0f //引く分のタイルを移動させるX軸のアニメーション
+                        3 -> moveTileAnime = 400.0f //引く分のタイルを移動させるY軸のアニメーション
+                        4 -> moveTileAnime = 820.0f //上の数字右側が下に来るときのY軸のアニメーション
+                        5 -> moveTileAnime = (1108 - ((number_up - 10) * 32)).toFloat()  //タイルが上側として合体するY軸のアニメーション(レベル1)
+                        6 -> moveTileAnime = (1108 - ((10 - number_down - 1) * 32)).toFloat()    //10の塊だったタイルが下側として合体するY軸のアニメーション
+                        7 -> moveTileAnime = 420.0f //答えのタイルが5に変化するときに隠してた5のタイルを移動させるY軸のアニメーション
+
+                        8 -> moveTileAnime = (1108 - ((number_up - 10 + 1) * 32)).toFloat()  //タイルが上側として合体するY軸のアニメーション(レベル2)
+                        9 -> moveTileAnime = (820 - ((number_up - 10 + 1) * 32)).toFloat() //上の数字右側が上に来るときのY軸のアニメーション
+
+                        10 -> moveTileAnime = (1108 - ((number_up - 10 + 2) * 32)).toFloat() //タイルが上側として合体するY軸のアニメーション(レベル3)
+                        11 -> moveTileAnime = (820 - (3 * 32)).toFloat()    //上の数字右側が上に来るときのY軸のアニメーション
+
+                        12 -> moveTileAnime = (1108 - (8 * 32)).toFloat()    //15-6の時に10の塊が下に来るときのY軸のアニメーション
+                        13 -> moveTileAnime = (820 - ((10 - number_down) * 32)).toFloat()   //右側のタイルが上に来るY軸のアニメーション
+
+                        14 -> moveTileAnime = (720 - (number_down * 32)).toFloat()  //左上から右下のタイルに移動するY軸のアニメーション
                         15 -> moveTileAnime
                         16 -> moveTileAnime
                         17 -> moveTileAnime
